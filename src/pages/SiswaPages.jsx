@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import SIswaComponent from "../components/Siswa/SIswaComponent";
+import SiswaComponent from "../components/Siswa/SiswaComponent";
 
 export default class SiswaPages extends Component {
   render() {
     return (
       <>
-        <SIswaComponent />
+        <SiswaComponent />
       </>
     );
   }

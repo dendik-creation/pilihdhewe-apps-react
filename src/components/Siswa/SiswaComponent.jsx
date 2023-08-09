@@ -12,7 +12,7 @@ import { KeyIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
 import { Transition } from "@headlessui/react";
 
-export default class SIswaComponent extends Component {
+export default class SiswaComponent extends Component {
   constructor(props) {
     super(props);
 
