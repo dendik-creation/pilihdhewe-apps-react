@@ -8,8 +8,6 @@ The Voting Application Project is our endeavor to develop a modern solution for 
 
 ## Key Features
 
-Markup :
-
 - Online Voting: Enables voters to cast their votes online, saving time and effort.
 - Ensured Security: Incorporates a robust security system to protect voter data and prevent vote manipulation.
 - Intuitive Interface: Built with React JS, providing a user-friendly interface that caters to users from various backgrounds.
@@ -17,15 +15,12 @@ Markup :
 
 ## Tech Stack
 
-Markup :
-
 - Frontend: React JS 18.2.0
 - Backend: Laravel 9 (PHP 8.1.2)
 - Database: MySQL
+- Styling : Tailwind CSS, HeadlessUI, Heroicons, Bootstrap Icons
 
 ## How to Contribute
-
-Markup :
 
 - We highly value contributions from all parties. If you wish to contribute to the development of the Voting Application Project, follow these steps:
 - Fork the Repository: Begin by forking this repository.
