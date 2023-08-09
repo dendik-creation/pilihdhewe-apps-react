@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap");
+* {
+  font-family: "Quicksand", sans-serif;
+}
+
+.colored-toast.swal2-icon-success {
+  background-color: #a9d291 !important;
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: #f27474 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+  background-color: #f8bb86 !important;
+}
+
+.colored-toast .swal2-title {
+  color: white;
+}
+.colored-toast .swal2-html-container {
+  color: white;
+}
+
+body.swal2-shown > [aria-hidden="true"] {
+  transition: all ease 0.3s;
+  filter: blur(6px);
+}
+
+body.swal2-shown > [aria-hidden="false"] {
+  transition: all ease 0.3s;
+}
+
+@keyframes slow-spin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.text-candidate {
+  font-size: 8em;
+}
+
+.text-brutal {
+  font-size: 30em;
+}
+
+.loader {
+  width: 90px;
+  height: 90px;
+  border: 6px dashed rgba(123, 158, 17, 0.422);
+  border-style: dashed solid dashed solid;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 6px dotted rgb(139, 183, 236);
+  border-style: solid dashed solid dashed;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  animation: rotationBack 1s ease infinite;
+  transform-origin: center center;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
