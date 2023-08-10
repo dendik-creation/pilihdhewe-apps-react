@@ -97,7 +97,7 @@ export default function AboutComponent() {
                   className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-md"
                 >
                   <img
-                    src="../../../public/mysql-icon.png"
+                    src="./mysql-icon.png"
                     className="w-16 h-16 object-cover"
                     alt=""
                   />
@@ -109,7 +109,7 @@ export default function AboutComponent() {
                   className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-md"
                 >
                   <img
-                    src="../../../public/google-drive-icon.png"
+                    src="./google-drive-icon.png"
                     className="w-16 h-16 object-cover"
                     alt=""
                   />
@@ -132,7 +132,7 @@ export default function AboutComponent() {
                   className="transition-all hover:bg-blue-400/30 hover:transition-all p-2 rounded-md"
                 >
                   <img
-                    src="../../../public/tailwind.svg"
+                    src="./tailwind.svg"
                     alt=""
                     className="w-12 h-12"
                   />
