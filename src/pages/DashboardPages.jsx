@@ -3,6 +3,7 @@ import DashboardComponent from "../components/Dashboard/DashboardComponent";
 import { LinkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { Transition } from "@headlessui/react";
+import { PUBLIC_URL } from "../utils/constant";
 
 export default class DashboardPages extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ export default class DashboardPages extends Component {
               <LinkIcon className="absolute text-stone-900 w-72 h-72 opacity-20 left-0 top-0 transition-all" />
               <div className="absolute bottom-0 left-0 w-full h-0 group-hover:h-8 bg-gray-800 opacity-90 flex items-center cursor-pointer justify-center hover:opacity-100 transition-all">
                 <Link
-                  to={"https://linkedwithvote.000webhostapp.com/"}
+                  to={PUBLIC_URL}
                   target="_blank"
                   className="text-slate-50 hidden group-hover:block w-full text-center"
                 >

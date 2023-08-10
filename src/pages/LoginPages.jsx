@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 import { Login } from "../API/auth";
-import { APP_NAME } from "../utils/constant";
+import { APP_NAME, PUBLIC_URL } from "../utils/constant";
 export default function LoginPages() {
   const [credentials, setCredentials] = useState({
     number_card: "",
@@ -49,7 +49,7 @@ export default function LoginPages() {
             leaveTo="opacity-0 scale-50"
             className="flex flex-col items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
           >
-            <NavLink to={"https://pilihdhewe.my.id"} target="_blank">
+            <NavLink to={PUBLIC_URL} target="_blank">
               <LinkIcon className="w-20 h-20 mb-3 fa-bounce hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)] hover:transition-all transition-all" />
             </NavLink>
             <div className="text-3xl">{APP_NAME}</div>
