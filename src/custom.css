@@ -94,3 +94,33 @@ body.swal2-shown > [aria-hidden="false"] {
     transform: rotate(-360deg);
   }
 }
+
+.svg-container {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.building-svg path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: build 15s ease-in-out infinite;
+}
+
+@keyframes build {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  25% {
+    stroke-dashoffset: 100;
+  }
+  75% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1000;
+  }
+}
