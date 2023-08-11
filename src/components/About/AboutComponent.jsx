@@ -82,7 +82,7 @@ export default function AboutComponent() {
             <h2 className="uppercase text-lg font-semibold transition-all border-b-2 w-fit">
               Tech Stack
             </h2>
-            <div className="flex justify-evenly items-center flex-wrap">
+            <div className="md:flex md:flex-wrap block justify-evenly items-center">
               <div className="flex justify-evenly gap-8 items-center">
                 <NavLink
                   to={"https://laravel.com"}

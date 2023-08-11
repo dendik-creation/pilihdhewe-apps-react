@@ -65,7 +65,7 @@ export default function LaporanComponent() {
             leave="transition transform duration-300"
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-90"
-            className=" w-full grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 py-4 shadow-md rounded-md mb-8 mx-4 md:mx-0"
+            className=" w-full grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 py-4 shadow-md rounded-md mb-8 md:mx-0"
           >
             <div className="flex flex-col items-start justify-around" id="info">
               <div className="">

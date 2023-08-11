@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { ACTIVE_USER, APP_URL } from "../../utils/constant";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
@@ -10,7 +10,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { KeyIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
-import { Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export default class SiswaComponent extends Component {
   constructor(props) {
@@ -424,7 +428,8 @@ export default class SiswaComponent extends Component {
                     enterTo="opacity-100 translate-y-0"
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
-                    leaveTo="opacity-0 scale-95 "
+                    leaveTo="opacity-0 scale-95"
+                    className="hidden lg:block"
                   >
                     <table className="min-w-full text-left text-sm font-light">
                       <thead className="font-medium border-gray-800 border-b-2">
@@ -512,6 +517,139 @@ export default class SiswaComponent extends Component {
                       </tbody>
                     </table>
                   </Transition>
+                  <div className="flex flex-col lg:hidden mx-4 mt-12">
+                    <ul className="flex flex-col gap-8">
+                      {filterSiswa.map((item, i) => (
+                        <li key={i} className="">
+                          <Transition
+                            show={this.state.transition}
+                            enter={`transform transition duration-[200ms] delay-[${
+                              i + 1 * 100
+                            }ms]`}
+                            enterFrom="transform opacity-0 scale-110"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-110"
+                            className="flex flex-col shadow-md rounded-md px-3 py-1.5 overflow-hidden relative"
+                          >
+                            <div className="absolute -top-2 -right-2 px-2.5 py-1.5 rounded-md bg-emerald-200">
+                              <Menu as="div" className="relative mt-1.5 me-1.5">
+                                <div>
+                                  <Menu.Button className="flex items-center group">
+                                    <div className="flex justify-start items-center">
+                                      <i className="bi bi-three-dots-vertical text-xl"></i>
+                                    </div>
+                                  </Menu.Button>
+                                </div>
+                                <Transition
+                                  as={Fragment}
+                                  enter="transition ease-out duration-100"
+                                  enterFrom="transform opacity-0 scale-95"
+                                  enterTo="transform opacity-100 scale-100"
+                                  leave="transition ease-in duration-75"
+                                  leaveFrom="transform opacity-100 scale-100"
+                                  leaveTo="transform opacity-0 scale-95"
+                                >
+                                  <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <Menu.Item>
+                                      {({ active }) => (
+                                        <div className="">
+                                          <button
+                                            onClick={() =>
+                                              this.editSiswa(item.id)
+                                            }
+                                            className={classNames(
+                                              active ? "bg-gray-100" : "",
+                                              "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
+                                            )}
+                                          >
+                                            <PencilSquareIcon className="w-4 h-4 text-blue-500 me-2" />
+                                            <span className="">Edit</span>
+                                          </button>
+                                          <form
+                                            className="my-2"
+                                            onSubmit={(e) =>
+                                              this.destroy(e, item.id, i)
+                                            }
+                                          >
+                                            <button
+                                              className={classNames(
+                                                active ? "bg-gray-100" : "",
+                                                "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
+                                              )}
+                                            >
+                                              <TrashIcon className="w-4 h-4 text-red-500 me-2" />
+                                              <span className="">Hapus</span>
+                                            </button>
+                                          </form>
+                                          <form
+                                            onSubmit={(e) =>
+                                              this.resetPassword(e, item.id)
+                                            }
+                                          >
+                                            <button
+                                              className={classNames(
+                                                active ? "bg-gray-100" : "",
+                                                "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
+                                              )}
+                                            >
+                                              <KeyIcon className="w-4 h-4 text-emerald-500 me-2" />
+                                              <span className="">Reset</span>
+                                            </button>
+                                          </form>
+                                        </div>
+                                      )}
+                                    </Menu.Item>
+                                  </Menu.Items>
+                                </Transition>
+                              </Menu>
+                            </div>
+                            <div className="flex justify-center my-3 items-center w-full">
+                              <div className="rounded mx-2 w-32 h-32 overflow-hidden">
+                                <img
+                                  src={item.gambar}
+                                  alt={item.name}
+                                  className="object-cover rounded-full border-2 border-slate-200 w-full h-full object-center"
+                                  onClick={() =>
+                                    this.showImgProfile(item.gambar, item.name)
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2">
+                              <div className="flex flex-col gap-2">
+                                <div className="flex justify-start text-slate-600 gap-2">
+                                  <i className="bi bi-person"></i>
+                                  <span className="">{item.name}</span>
+                                </div>
+                                <div className="flex justify-start text-slate-600 gap-2">
+                                  <i className="bi bi-person-vcard"></i>
+                                  <span className="">{item.number_card}</span>
+                                </div>
+                              </div>
+                              <div className="flex flex-col gap-2 ms-8">
+                                <div className="flex justify-start text-slate-600 gap-2">
+                                  <i className="bi bi-person-workspace"></i>
+                                  <span className="">{item.kelas.name}</span>
+                                </div>
+                                <div className="flex justify-start text-slate-600 gap-2">
+                                  <i
+                                    className={`bi bi-${
+                                      item.gender == "Laki-laki"
+                                        ? "gender-male"
+                                        : "gender-female"
+                                    }`}
+                                  ></i>
+                                  <span className="">{item.gender}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </Transition>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               ) : siswa.length > 0 ? (
                 <div className="block">
