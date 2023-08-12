@@ -2,7 +2,7 @@ import axios from "axios";
 import { ACTIVE_USER, APP_URL } from "../utils/constant";
 import Swal from "sweetalert2";
 
-export const Login = (credentials, navigate) => {
+export const Login = (credentials, navigate, setLoading) => {
   axios
     .post(`${APP_URL}/auth/login`, credentials)
     .then((response) => {
@@ -11,14 +11,21 @@ export const Login = (credentials, navigate) => {
     .then(() => {
       const credentials = JSON.parse(localStorage.getItem("credentials"));
       if (credentials.user.role == "siswa") {
-        window.location.reload();
-        navigate("/events");
+        setLoading(false);
+        setTimeout(() => {
+          window.location.reload();
+          navigate("/events");
+        }, 500);
       } else {
-        window.location.reload();
-        navigate("/");
+        setLoading(false);
+        setTimeout(() => {
+          window.location.reload();
+          navigate("/");
+        }, 500);
       }
     })
     .catch((err) => {
+      setLoading(false);
       Swal.fire({
         icon: "error",
         title: "Login Failed",

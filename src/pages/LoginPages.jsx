@@ -1,15 +1,15 @@
-import { LinkIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 import { Login } from "../API/auth";
-import { APP_NAME, PUBLIC_URL } from "../utils/constant";
+import { PUBLIC_URL } from "../utils/constant";
 export default function LoginPages() {
   const [credentials, setCredentials] = useState({
     number_card: "",
     password: "",
   });
   const [isShow, setShow] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     setShow(true);
@@ -29,14 +29,11 @@ export default function LoginPages() {
 
   const beforeSubmit = (e) => {
     e.preventDefault();
-    Login(credentials, navigate);
+    setLoading(true);
+    Login(credentials, navigate, setLoading);
   };
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      ></link>
       <section className="relative bg-gray-50 h-screen dark:bg-gray-900 transition-all overflow-hidden">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
           <Transition
@@ -47,12 +44,31 @@ export default function LoginPages() {
             leave="transition transform duration-500"
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-50"
-            className="flex flex-col items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+            className="flex items-center gap-2 md:gap-4 mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
           >
             <NavLink to={PUBLIC_URL} target="_blank">
-              <LinkIcon className="w-20 h-20 mb-3 fa-bounce hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)] hover:transition-all transition-all" />
+              <div className="svg-container-login">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  className="md:w-28 md:h-28 w-24 h-24 text-white/80 hover:text-amber-300 hover:transition-all transition-all hover:drop-shadow-xl dark:hover:drop-shadow-[0_0_2px_rgba(255,0,0,.2)] building-svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+                  ></path>
+                </svg>
+              </div>
             </NavLink>
-            <div className="text-3xl">{APP_NAME}</div>
+            <div className="flex flex-col cursor-default justify-center items-center">
+              <span className="text-3xl">Pilih</span>
+              <span className="text-3xl">Dhewe</span>
+            </div>
           </Transition>
 
           <Transition
@@ -104,10 +120,17 @@ export default function LoginPages() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center items-center text-white transition-all hover:transition-all bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 group"
+                  disabled={isLoading}
+                  className="w-full flex justify-center items-center text-white transition-all hover:transition-all bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 group disabled:bg-primary-900 disabled:hover:bg-primary-900 disabled:cursor-not-allowed"
                 >
-                  <span className="me-3">Log in</span>
-                  <i className="bi bi-door-closed text-xl"></i>
+                  <span className="me-3">
+                    {isLoading ? "Checking" : "Log in"}
+                  </span>
+                  {isLoading ? (
+                    <span className="loader-login transition-all"></span>
+                  ) : (
+                    <i className="bi bi-door-closed text-xl transition-all"></i>
+                  )}
                 </button>
               </form>
             </div>
@@ -122,18 +145,7 @@ export default function LoginPages() {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-50"
             className="flex relative justify-center items-center gap-24 transition-all max-w-md w-full mt-4"
-          >
-            <NavLink
-              to={"https://laravel.com"}
-              target="_blank"
-              className="z-20"
-            >
-              <i className="fa-brands fa-laravel text-5xl text-red-400 hover:drop-shadow-xl dark:hover:drop-shadow-[0_0_2px_rgba(255,255,255,.6)] hover:transition-all transition-all"></i>
-            </NavLink>
-            <NavLink to={"https://react.dev"} target="_blank" className="z-20">
-              <i className="fa-brands fa-react text-5xl text-blue-400 hover:drop-shadow-xl dark:hover:drop-shadow-[0_0_2px_rgba(255,255,255,.6)] hover:transition-all transition-all"></i>
-            </NavLink>
-          </Transition>
+          ></Transition>
         </div>
       </section>
     </>
