@@ -52,17 +52,23 @@ export default function Dashboard() {
   const userNavigation = [
     {
       name: "My Profile",
+      current: false,
+      path: "/my-profile",
       click: () => goToProfile(),
       icon:
         ACTIVE_USER.user.role == "admin" ? "bi-incognito" : "bi-person-rolodex",
     },
     {
       name: "About App",
+      current: false,
+      path: "/about",
       click: () => goToAbout(),
       icon: "bi-info-circle",
     },
     {
       name: "Log out",
+      current: false,
+      path: "/logout",
       click: () => beforeLogout(),
       icon: "bi-door-open",
     },
@@ -90,6 +96,20 @@ export default function Dashboard() {
         Logout();
       }
     });
+  };
+
+  let isCurrentUserNav = () => {
+    const location = useLocation();
+    let currentPath = location.pathname;
+    userNavigation.map((item) => {
+      if (currentPath == item.path) {
+        item.current = true;
+      } else {
+        item.current = false;
+      }
+      return item;
+    });
+    return userNavigation;
   };
 
   let isActiveNav = () => {
@@ -121,10 +141,14 @@ export default function Dashboard() {
   let isAllowNav = isActiveNav().filter(
     (item) => item.access == ACTIVE_USER.user.role || item.access == "both"
   );
+  let showUserNav = isCurrentUserNav();
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-50">
+        <Disclosure
+          as="nav"
+          className="bg-gray-800 backdrop-blur-xl sticky top-0 z-50"
+        >
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -205,7 +229,7 @@ export default function Dashboard() {
                           leaveTo="transform opacity-0 scale-95"
                         >
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            {userNavigation.map((item) => (
+                            {showUserNav.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
                                   <button
@@ -213,8 +237,12 @@ export default function Dashboard() {
                                     onClick={item.click}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
+                                      item.current ? "bg-gray-300" : "",
                                       "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
                                     )}
+                                    aria-current={
+                                      item.current ? "page" : undefined
+                                    }
                                   >
                                     <i className={`bi ${item.icon} me-3`}></i>
                                     <span>{item.name}</span>
@@ -292,12 +320,15 @@ export default function Dashboard() {
                     </button>
                   </div>
                   <div className="mt-3 space-y-1 px-2">
-                    {userNavigation.map((item) => (
+                    {showUserNav.map((item) => (
                       <Disclosure.Button
                         key={item.name}
                         as="button"
                         onClick={item.click}
-                        className="flex w-full rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                        className={`flex w-full rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white ${
+                          item.current ? "bg-gray-700 text-gray-100" : ""
+                        }`}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         <i className={`bi ${item.icon} me-3`}></i>
                         {item.name}

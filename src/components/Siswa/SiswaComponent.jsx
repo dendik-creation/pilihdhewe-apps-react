@@ -291,7 +291,7 @@ export default class SiswaComponent extends Component {
     e.preventDefault();
     Swal.fire({
       title: "Apakah Anda Yakin?",
-      text: "Aksi tidak dapat dibatalkan",
+      text: "Akan menghapus seluruh data siswa yang terpilih",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

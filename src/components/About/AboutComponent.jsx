@@ -57,7 +57,7 @@ export default function AboutComponent() {
             <h2 className="uppercase text-lg font-semibold transition-all border-b-2 w-fit">
               General Information
             </h2>
-            <p className="first-letter:ms-5">
+            <p className="first-letter:ms-5 selection:bg-emerald-200">
               Proyek Aplikasi Voting adalah upaya kami untuk mengembangkan
               solusi modern untuk melakukan pemungutan suara. Dengan
               memanfaatkan kekuatan framework Laravel dan React JS, bersama
@@ -80,21 +80,23 @@ export default function AboutComponent() {
             className="flex flex-col gap-5"
           >
             <h2 className="uppercase text-lg font-semibold transition-all border-b-2 w-fit">
-              Tech Stack
+              Tech Stack Application
             </h2>
-            <div className="md:flex md:flex-wrap block justify-evenly items-center">
+            <div className="md:flex-row flex md:flex-wrap flex-col justify-around gap-5 md:gap-0 items-center">
               <div className="flex justify-evenly gap-8 items-center">
                 <NavLink
                   to={"https://laravel.com"}
                   target="_blank"
-                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-md"
+                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-3 rounded-full"
+                  title="Laravel v9"
                 >
                   <i className="fa-brands fa-laravel text-5xl text-red-400"></i>
                 </NavLink>
                 <NavLink
                   to={"https://mysql.com"}
                   target="_blank"
-                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-md"
+                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-full"
+                  title="MySQL"
                 >
                   <img
                     src="./mysql-icon.png"
@@ -106,7 +108,8 @@ export default function AboutComponent() {
                 <NavLink
                   to={"https://drive.google.com"}
                   target="_blank"
-                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-md"
+                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-full"
+                  title="Google Drive API v3"
                 >
                   <img
                     src="./google-drive-icon.png"
@@ -115,27 +118,25 @@ export default function AboutComponent() {
                   />
                 </NavLink>
               </div>
-              <span className="text-lg hidden md:block">
+              <span className="text-lg hidden lg:block">
                 <i className="fa-solid fa-arrows-left-right text-slate-600"></i>
               </span>
               <div className="flex justify-center items-center gap-8">
                 <NavLink
                   to={"https://react.dev"}
                   target="_blank"
-                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-2 rounded-md"
+                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-3 rounded-full"
+                  title="React JS v18"
                 >
                   <i className="fa-brands fa-react text-5xl text-blue-400"></i>
                 </NavLink>
                 <NavLink
                   to={"https://tailwindcss.com"}
                   target="_blank"
-                  className="transition-all hover:bg-blue-400/30 hover:transition-all p-2 rounded-md"
+                  className="transition-all hover:bg-blue-400/10 hover:transition-all p-3 rounded-full"
+                  title="Tailwind CSS v3.3.3"
                 >
-                  <img
-                    src="./tailwind.svg"
-                    alt=""
-                    className="w-12 h-12"
-                  />
+                  <img src="./tailwind.svg" alt="" className="w-12 h-12" />
                 </NavLink>
               </div>
             </div>

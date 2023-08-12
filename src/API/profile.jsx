@@ -12,6 +12,16 @@ export const httpGetMe = async () => {
   return response.data.data;
 };
 
+export const showImageDetail = (image) => {
+  return Swal.fire({
+    html: `
+    <div class="overfow-hidden rounded-full w-full h-full">
+      <img src="${image}" class="object-cover rounded-md object-center w-full h-full" />
+    </div>
+  `,
+  });
+};
+
 export const httpUpdateMe = async (data, id) => {
   await axios
     .put(`${APP_URL}/siswa/${id}`, data, {

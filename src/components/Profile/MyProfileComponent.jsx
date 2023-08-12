@@ -5,6 +5,7 @@ import {
   httpGetMe,
   httpUpdateMe,
   httpUpdateProfileImage,
+  showImageDetail,
 } from "../../API/profile";
 import { Transition } from "@headlessui/react";
 import {
@@ -165,6 +166,7 @@ export default function MyProfileComponent(props) {
                 src={ACTIVE_USER.user.gambar}
                 className="w-full h-full object-cover transition-all hover:scale-110 group-hover:transition-all"
                 alt="User Profile"
+                onClick={() => showImageDetail(ACTIVE_USER.user.gambar)}
               />
             </div>
             <div
