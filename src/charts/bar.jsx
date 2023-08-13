@@ -41,8 +41,8 @@ export const bar = (event) => {
         },
       },
     },
-    maintainAspectRatio: false,
-    // responsive: true,
+    maintainAspectRatio: true,
+    responsive: true,
     plugins: {
       title: {
         display: true,

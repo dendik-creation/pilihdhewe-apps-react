@@ -10,6 +10,7 @@ export default function LoginPages() {
   });
   const [isShow, setShow] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
 
   useEffect(() => {
     setShow(true);
@@ -25,12 +26,10 @@ export default function LoginPages() {
     }));
   };
 
-  const navigate = useNavigate();
-
   const beforeSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    Login(credentials, navigate, setLoading);
+    Login(credentials, setLoading, setSuccess);
   };
   return (
     <>
@@ -55,7 +54,7 @@ export default function LoginPages() {
                   strokeWidth="1.5"
                   stroke="currentColor"
                   aria-hidden="true"
-                  className="md:w-28 md:h-28 w-24 h-24 text-white/80 hover:text-amber-300 hover:transition-all transition-all hover:drop-shadow-xl dark:hover:drop-shadow-[0_0_2px_rgba(255,0,0,.2)] building-svg"
+                  className="md:w-28 md:h-28 w-24 h-24 dark:text-white/80 hover:text-primary-600 text-primary-400 hover:transition-all transition-all hover:drop-shadow-xl dark:hover:drop-shadow-[0_0_2px_rgba(255,0,0,.2)] building-svg"
                 >
                   <path
                     strokeLinecap="round"
@@ -96,9 +95,9 @@ export default function LoginPages() {
                   </label>
                   <input
                     type="text"
+                    required
                     name="number_card"
                     id="number_card"
-                    placeholder="SMK••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={number_card}
                     onChange={(e) => handleChange(e)}
@@ -112,7 +111,7 @@ export default function LoginPages() {
                     type="password"
                     name="password"
                     id="password"
-                    placeholder="••••••••"
+                    required
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={password}
                     onChange={(e) => handleChange(e)}
@@ -121,12 +120,22 @@ export default function LoginPages() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex justify-center items-center text-white transition-all hover:transition-all bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 group disabled:bg-primary-900 disabled:hover:bg-primary-900 disabled:cursor-not-allowed"
+                  className={`w-full flex justify-center items-center text-white transition-all hover:transition-all focus:ring-4 focus:outline-none focus:ring-primary-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800 group disabled:bg-primary-900 disabled:hover:bg-primary-900 disabled:cursor-not-allowed ${
+                    isSuccess && !isLoading
+                      ? "bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-600"
+                      : "bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
+                  }`}
                 >
                   <span className="me-3">
-                    {isLoading ? "Checking" : "Log in"}
+                    {isLoading
+                      ? "Checking"
+                      : !isLoading && isSuccess
+                      ? "Redirecting"
+                      : "Log in"}
                   </span>
-                  {isLoading ? (
+                  {isLoading && !isSuccess ? (
+                    <span className="loader-login transition-all"></span>
+                  ) : !isLoading && isSuccess ? (
                     <span className="loader-login transition-all"></span>
                   ) : (
                     <i className="bi bi-door-closed text-xl transition-all"></i>
@@ -135,17 +144,6 @@ export default function LoginPages() {
               </form>
             </div>
           </Transition>
-
-          <Transition
-            show={isShow}
-            enter="transition transform duration-300 delay-[700ms]"
-            enterFrom="opacity-0 scale-0"
-            enterTo="opacity-100 scale-100"
-            leave="transition transform duration-500"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-50"
-            className="flex relative justify-center items-center gap-24 transition-all max-w-md w-full mt-4"
-          ></Transition>
         </div>
       </section>
     </>

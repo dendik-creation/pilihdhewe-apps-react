@@ -357,25 +357,43 @@ export default function EventDetailComponent() {
                         <RadioGroup value={selected} onChange={setSelected}>
                           <div className="grid grid-cols-1 gap-4 w-full">
                             <div className="bg-white relative flex flex-col overflow-hidden rounded-lg px-5 py-8 shadow-md focus:outline-none">
-                              <div className="absolute flex justify-center overflow-hidden items-center top-0 left-0 h-full w-32">
+                              <div className="absolute flex justify-center overflow-hidden items-center top-0 left-0 h-full w-36">
                                 <img
                                   src={meVote.user.gambar}
                                   className="w-full h-full object-cover object-center"
                                 />
                               </div>
-                              <div className="block ms-32">
+                              <div className="block ms-36">
                                 <div className="flex justify-start text-lg font-semibold text-gray-900 mb-2">
                                   <i className="bi bi-person me-2"></i>
                                   <span>{meVote.user.name}</span>
                                 </div>
                                 <div className="flex justify-start text-sm text-gray-500 mb-1">
                                   <i className="bi bi-bookmark-check me-2 text-md"></i>
-                                  <span>{meVote.visi}</span>
+                                  <span className="line-clamp-1">
+                                    {meVote.visi}
+                                  </span>
                                 </div>
 
-                                <div className="flex justify-start text-sm text-gray-500">
+                                <div className="flex justify-start mb-3 text-sm text-gray-500">
                                   <i className="bi bi-blockquote-left me-2 text-md"></i>
-                                  <span>{meVote.misi}</span>
+                                  <span className="line-clamp-1">
+                                    {meVote.misi}
+                                  </span>
+                                </div>
+                                <div
+                                  onClick={() =>
+                                    detailCandidate(
+                                      meVote.user.name,
+                                      meVote.user.gambar,
+                                      meVote.visi,
+                                      meVote.misi
+                                    )
+                                  }
+                                  className="flex justify-start text-sm px-4 py-2 rounded-md border-2 w-fit cursor-pointer text-gray-500 hover:bg-gray-500 hover:text-sky-100"
+                                >
+                                  <i className="bi bi-info-circle me-2 text-md"></i>
+                                  <span>Detail</span>
                                 </div>
                               </div>
                             </div>

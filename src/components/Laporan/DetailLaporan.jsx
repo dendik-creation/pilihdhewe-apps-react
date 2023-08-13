@@ -68,8 +68,54 @@ export default function DetailLaporan() {
 
       {event != null ? (
         <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 mx-4 md:mx-0">
+          <div className="mx-3 md:mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            <Transition
+              show={show}
+              enter="transition transform duration-300"
+              enterFrom="opacity-0 scale-110"
+              enterTo="opacity-100 scale-100"
+              leave="transition transform duration-300"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-90"
+              className="px-4 py-2 rounded-md mb-8 shadow-md flex flex-col justify-center item-center w-full"
+            >
+              <h2 className="font-semibold text-lg bg-slate-200 my-2 text-center w-full rounded-md px-3 py-1.5">
+                Informasi Event
+              </h2>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col justify-start items-start gap-3 sm:gap-4 sm:flex-row sm:items-center">
+                  <div className="flex flex-start gap-3">
+                    <i className="bi bi-activity"></i>
+                    <span className="">{event.status}</span>
+                  </div>
+                  <div className="hidden sm:block" id="spacer">
+                    |
+                  </div>
+                  <div className="flex flex-start gap-3">
+                    <i className="bi bi-calendar2-event"></i>
+                    <span className="">
+                      {event.start_date} - {event.end_date}
+                    </span>
+                  </div>
+                  <div className="hidden sm:block" id="spacer">
+                    |
+                  </div>
+                  <div className="flex flex-start gap-3">
+                    <i className="bi bi-person-check"></i>
+                    <span className="">
+                      {event.partisipan.length} / {event.total_partisipan}{" "}
+                      Partisipan
+                    </span>
+                  </div>
+                </div>
+                <div className="flex justify-start gap-3">
+                  <i className="bi bi-blockquote-left"></i>
+                  <span className="">{event.description}</span>
+                </div>
+              </div>
+            </Transition>
+
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
               <Transition
                 show={show}
                 enter="transition transform duration-300"
@@ -159,24 +205,24 @@ export default function DetailLaporan() {
                       >
                         <div className="flex flex-col justify-center items-center my-3">
                           <div
-                            className={`absolute top-2 left-2 w-fit px-4 py-2 rounded-md text-slate-50 opacity-100 bg-emerald-600 ${
-                              i == 0 ? "text-7xl" : "text-4xl"
+                            className={`absolute top-2 left-2 lg:text-4xl text-xl w-fit px-4 py-2 rounded-md text-slate-50 opacity-100 bg-emerald-600 ${
+                              i == 0 ? "lg:text-7xl" : "text-4xl"
                             }`}
                           >
                             <div className="flex justify-center items-center gap-4">
-                              <i className="bi bi-trophy text-3xl"></i>
+                              <i className="bi bi-trophy lg:text-3xl text-xl"></i>
                               <span>{i + 1}</span>
                             </div>
                           </div>
                           <div
-                            className={`overflow-hidden mb-3 border-4 border-white rounded-md ${
+                            className={`overflow-hidden mb-3 rounded-full ring-2 ring-white ring-offset-2  ${
                               i == 0 ? "w-52 h-52" : "w-36 h-36"
                             }`}
                           >
                             <img
                               src={item.user.gambar}
                               alt=""
-                              className="w-full h-full rounded-md object-cover object-center"
+                              className="w-full h-full rounded-full object-cover object-center"
                             />
                           </div>
                           <div className="flex mb-3 justify-center items-center gap-4">

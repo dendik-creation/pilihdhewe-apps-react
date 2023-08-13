@@ -8,21 +8,23 @@ export const ProfileComponent = () => {
   const [showTab, setShowTab] = useState(false);
   const [tabs, setTabs] = useState(1);
   const [show, setShow] = useState(false);
-  const [fromChild, setFromChild] = useState("");
+  const [fromChild, setFromChild] = useState(null);
 
   const handleAxios = (res) => {
     setFromChild(res);
   };
 
   const changeTab = (num) => {
-    if (tabs !== num) {
-      setShow(false);
-      setTimeout(() => {
-        setShow(true);
-      }, 250);
-      setTimeout(() => {
-        setTabs(num);
-      }, 250);
+    if (fromChild != null) {
+      if (tabs !== num) {
+        setShow(false);
+        setTimeout(() => {
+          setShow(true);
+        }, 250);
+        setTimeout(() => {
+          setTabs(num);
+        }, 250);
+      }
     }
   };
   useEffect(() => {
