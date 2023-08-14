@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 import { Login } from "../API/auth";
 import { PUBLIC_URL } from "../utils/constant";
@@ -28,7 +28,6 @@ export default function LoginPages() {
 
   const beforeSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
     Login(credentials, setLoading, setSuccess);
   };
   return (
@@ -119,10 +118,12 @@ export default function LoginPages() {
                 </div>
                 <button
                   type="submit"
-                  disabled={isLoading && !isSuccess}
-                  className={`w-full flex justify-center items-center text-white transition-all hover:transition-all focus:ring-4 focus:outline-none focus:ring-primary-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800 group disabled:bg-primary-900 disabled:hover:bg-primary-900 disabled:cursor-not-allowed ${
+                  disabled={isLoading || (!isLoading && isSuccess)}
+                  className={`w-full flex justify-center items-center text-white transition-all hover:transition-all focus:ring-4 focus:outline-none focus:ring-primary-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800 group disabled:cursor-not-allowed ${
                     isSuccess && !isLoading
                       ? "bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-600"
+                      : isLoading && !isSuccess
+                      ? "disabled:bg-primary-900 disabled:hover:bg-primary-900"
                       : "bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
                   }`}
                 >

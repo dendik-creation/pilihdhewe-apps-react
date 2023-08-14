@@ -45,6 +45,7 @@ export default function MyProfileComponent(props) {
   const [modalImage, setModalImage] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isEnd, setEnd] = useState(false);
+  const [isLoadingUpdate, setLoadingUpdate] = useState(false);
 
   useEffect(() => {
     httpGetMe()
@@ -129,11 +130,13 @@ export default function MyProfileComponent(props) {
 
   const beforeSubmit = (e) => {
     e.preventDefault();
+    setLoadingUpdate(true);
     let form = {
       name: data.name,
       gender: data.gender,
       kelas_id: data.kelas,
     };
+
     httpUpdateMe(form, initData.id);
   };
   return (
@@ -279,7 +282,7 @@ export default function MyProfileComponent(props) {
           </div>
           <button
             type="submit"
-            disabled={!btnSubmit}
+            disabled={!btnSubmit || isLoadingUpdate}
             className="w-full bg-blue-200 px-2 py-1 rounded-md transition-all disabled:opacity-30 disabled:hover:bg-blue-200 disabled:hover:text-black disabled:cursor-not-allowed hover:bg-gray-800 hover:transition-all hover:text-white"
           >
             Update

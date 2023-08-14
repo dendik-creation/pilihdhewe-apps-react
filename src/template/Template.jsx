@@ -209,13 +209,13 @@ export default function Dashboard() {
                                 alt=""
                               />
                               {credentials.name !== null ? (
-                                <div className="text-gray-300 text-sm me-2 w-40 line-clamp-1">
+                                <div className="text-gray-300 text-sm me-3 line-clamp-1">
                                   {credentials.name}
                                 </div>
                               ) : (
                                 ""
                               )}
-                              <ChevronDownIcon className="w-4 h-4 text-slate-50 group-hover:rotate-180 group-hover:transition-all transition-all" />
+                              <ChevronDownIcon className="w-4 h-4 text-slate-50 group-active:rotate-180 group-active:transition-all transition-all" />
                             </div>
                           </Menu.Button>
                         </div>

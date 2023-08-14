@@ -144,7 +144,7 @@ body.swal2-shown > [aria-hidden="false"] {
 }
 .lds-ellipsis div {
   position: absolute;
-  top: 10px;
+  top: 9px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -153,19 +153,19 @@ body.swal2-shown > [aria-hidden="false"] {
 }
 .lds-ellipsis div:nth-child(1) {
   left: 8px;
-  animation: lds-ellipsis1 0.4s infinite;
+  animation: lds-ellipsis1 0.3s infinite;
 }
 .lds-ellipsis div:nth-child(2) {
   left: 8px;
-  animation: lds-ellipsis2 0.4s infinite;
+  animation: lds-ellipsis2 0.3s infinite;
 }
 .lds-ellipsis div:nth-child(3) {
   left: 32px;
-  animation: lds-ellipsis2 0.4s infinite;
+  animation: lds-ellipsis2 0.3s infinite;
 }
 .lds-ellipsis div:nth-child(4) {
   left: 56px;
-  animation: lds-ellipsis3 0.4s infinite;
+  animation: lds-ellipsis3 0.3s infinite;
 }
 @keyframes lds-ellipsis1 {
   0% {

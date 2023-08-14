@@ -3,6 +3,7 @@ import { ACTIVE_USER, APP_URL } from "../utils/constant";
 import Swal from "sweetalert2";
 
 export const Login = (credentials, setLoading, setSuccess) => {
+  setLoading(true);
   axios
     .post(`${APP_URL}/auth/login`, credentials)
     .then((response) => {
