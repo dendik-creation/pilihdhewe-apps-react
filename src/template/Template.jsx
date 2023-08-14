@@ -209,7 +209,7 @@ export default function Dashboard() {
                                 alt=""
                               />
                               {credentials.name !== null ? (
-                                <div className="text-gray-300 text-sm me-2">
+                                <div className="text-gray-300 text-sm me-2 w-40 line-clamp-1">
                                   {credentials.name}
                                 </div>
                               ) : (

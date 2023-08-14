@@ -119,7 +119,7 @@ export default function LoginPages() {
                 </div>
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading && !isSuccess}
                   className={`w-full flex justify-center items-center text-white transition-all hover:transition-all focus:ring-4 focus:outline-none focus:ring-primary-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800 group disabled:bg-primary-900 disabled:hover:bg-primary-900 disabled:cursor-not-allowed ${
                     isSuccess && !isLoading
                       ? "bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-600"
@@ -136,7 +136,12 @@ export default function LoginPages() {
                   {isLoading && !isSuccess ? (
                     <span className="loader-login transition-all"></span>
                   ) : !isLoading && isSuccess ? (
-                    <span className="loader-login transition-all"></span>
+                    <div class="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
                   ) : (
                     <i className="bi bi-door-closed text-xl transition-all"></i>
                   )}
