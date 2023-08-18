@@ -22,7 +22,8 @@ export const showImageDetail = (image) => {
   });
 };
 
-export const httpUpdateMe = async (data, id) => {
+export const httpUpdateMe = async (data, id, setLoadingUpdate) => {
+  setLoadingUpdate(true);
   await axios
     .put(`${APP_URL}/siswa/${id}`, data, {
       headers: {
@@ -46,6 +47,7 @@ export const httpUpdateMe = async (data, id) => {
         });
     })
     .catch((err) => {
+      setLoadingUpdate(false);
       Swal.fire({
         icon: "error",
         title: "Aksi Gagal",

@@ -137,7 +137,7 @@ export default function LoginPages() {
                   {isLoading && !isSuccess ? (
                     <span className="loader-login transition-all"></span>
                   ) : !isLoading && isSuccess ? (
-                    <div class="lds-ellipsis">
+                    <div className="lds-ellipsis">
                       <div></div>
                       <div></div>
                       <div></div>

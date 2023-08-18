@@ -130,14 +130,13 @@ export default function MyProfileComponent(props) {
 
   const beforeSubmit = (e) => {
     e.preventDefault();
-    setLoadingUpdate(true);
     let form = {
       name: data.name,
       gender: data.gender,
       kelas_id: data.kelas,
     };
 
-    httpUpdateMe(form, initData.id);
+    httpUpdateMe(form, initData.id, setLoadingUpdate);
   };
   return (
     <>
@@ -167,7 +166,7 @@ export default function MyProfileComponent(props) {
                 leaveTo="opacity-0 scale-50"
                 as="img"
                 src={ACTIVE_USER.user.gambar}
-                className="w-full h-full object-cover transition-all hover:scale-110 group-hover:transition-all"
+                className="w-full h-full cursor-pointer hover:brightness-75 object-cover transition-all hover:scale-110 group-hover:transition-all"
                 alt="User Profile"
                 onClick={() => showImageDetail(ACTIVE_USER.user.gambar)}
               />
@@ -283,9 +282,23 @@ export default function MyProfileComponent(props) {
           <button
             type="submit"
             disabled={!btnSubmit || isLoadingUpdate}
-            className="w-full bg-blue-200 px-2 py-1 rounded-md transition-all disabled:opacity-30 disabled:hover:bg-blue-200 disabled:hover:text-black disabled:cursor-not-allowed hover:bg-gray-800 hover:transition-all hover:text-white"
+            className={`w-full flex justify-center items-center gap-4 bg-blue-200 px-2 py-1 rounded-md transition-all ${
+              !btnSubmit ? "opacity-30" : isLoadingUpdate ? "bg-teal-200" : ""
+            } disabled:hover:bg-blue-200 disabled:hover:text-black disabled:cursor-not-allowed ${
+              btnSubmit ? "hover:bg-gray-800" : ""
+            } hover:transition-all hover:text-white`}
           >
-            Update
+            <span>{isLoadingUpdate ? "Updating" : "Update"}</span>
+            {isLoadingUpdate ? (
+              <div className="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            ) : (
+              ""
+            )}
           </button>
         </form>
       </div>
@@ -346,11 +359,11 @@ export default function MyProfileComponent(props) {
                 Upload Foto Profil Baru
               </h3>
               <span className="text-sm text-slate-500 mb-5">
-                JPG File | Maximum 1 MB
+                JPG File | Max 1 MB
               </span>
               {selectImage.selected.name ? (
                 <div
-                  className={`text-slate-500 flex justify-start items-center absolute bottom-1 md:bottom-5 lg:bottom-8 gap-2`}
+                  className={`text-slate-500 flex justify-start items-center absolute bottom-0.5 md:bottom-5 lg:bottom-8 gap-2`}
                 >
                   <i className="bi bi-card-image text-lg"></i>
                   <span className="text-sm">
