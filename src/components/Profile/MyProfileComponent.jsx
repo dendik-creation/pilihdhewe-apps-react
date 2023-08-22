@@ -359,7 +359,7 @@ export default function MyProfileComponent(props) {
                 Upload Foto Profil Baru
               </h3>
               <span className="text-sm text-slate-500 mb-5">
-                JPG File | Max 1 MB
+                JPG File | Max 2 MB
               </span>
               {selectImage.selected.name ? (
                 <div
