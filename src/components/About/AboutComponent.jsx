@@ -118,8 +118,11 @@ export default function AboutComponent() {
                   />
                 </NavLink>
               </div>
-              <span className="text-lg hidden lg:block">
-                <i className="fa-solid fa-arrows-left-right text-slate-600"></i>
+              <span className="text-lg hidden xl:block rotate-90">
+                <i
+                  className="bi bi-arrows-collapse text-slate-400 text-2xl"
+                  title="Backend | Frontend"
+                ></i>
               </span>
               <div className="flex justify-center items-center gap-8">
                 <NavLink
