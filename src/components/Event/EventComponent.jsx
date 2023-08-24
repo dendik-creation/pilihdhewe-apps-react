@@ -156,8 +156,7 @@ export default function EventComponent() {
                         <span className="absolute top-0 left-0 inline-flex m-3 px-3 py-2 rounded-lg z-10 shadow-inner bg-slate-50 text-sm font-medium text-slate-700 select-none">
                           #{i + 1}
                         </span>
-                        {ACTIVE_USER.user.role == "admin" &&
-                        item.status !== "Selesai" ? (
+                        {ACTIVE_USER.user.role == "admin" ? (
                           <NavLink
                             to={`/events/edit/${item.id}`}
                             className="absolute shadow-inner lg:-top-14 top-0 right-14 inline-flex m-3 px-3 py-2 rounded-lg z-10 bg-blue-400 hover:bg-blue-700 hover:transition-colors text-sm border-2 border-slate-50 font-medium text-white select-none transition-all group-hover:opacity-100 group-hover:transition-all lg:group-hover:-top-0"

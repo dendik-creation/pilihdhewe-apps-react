@@ -9,6 +9,7 @@ import {
   httpGetShow,
   httpUpdateCandidate,
   httpUpdatePut,
+  isRangeDate,
 } from "../../API/event";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
@@ -114,35 +115,36 @@ export const EventEdit = () => {
   };
   const beforeSubmit = (e) => {
     e.preventDefault();
-    if (checkBtn) {
-      let candidateUpdate = candidate.filter((item) => item.status == "then");
-      let candidateNew = candidate.filter((item) => item.status == "new");
-      let form = {
-        name: formData.name,
-        description: formData.description,
-        start_date: formData.start_date,
-        end_date: formData.end_date,
-      };
-      console.log(candidate);
-      Swal.fire({
-        title: "Update Event?",
-        text: "Anda dapat mengeditnya kembali bila ada kesalahan",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, Update!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          candidateUpdate.map((item) => {
-            httpUpdateCandidate(item);
-          });
-          if (candidateNew.length > 0) {
-            httpCreateCandidate(candidateNew);
+    if (isRangeDate(formData.start_date, formData.end_date)) {
+      if (checkBtn) {
+        let candidateUpdate = candidate.filter((item) => item.status == "then");
+        let candidateNew = candidate.filter((item) => item.status == "new");
+        let form = {
+          name: formData.name,
+          description: formData.description,
+          start_date: formData.start_date,
+          end_date: formData.end_date,
+        };
+        Swal.fire({
+          title: "Update Event?",
+          text: "Anda dapat mengeditnya kembali bila ada kesalahan",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, Update!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            candidateUpdate.map((item) => {
+              httpUpdateCandidate(item);
+            });
+            if (candidateNew.length > 0) {
+              httpCreateCandidate(candidateNew);
+            }
+            httpUpdatePut(form, navigate, id);
           }
-          httpUpdatePut(form, navigate, id);
-        }
-      });
+        });
+      }
     }
   };
   const checkBtn = () => {

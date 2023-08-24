@@ -212,3 +212,31 @@ export const httpGetMyVoteShow = async (id) => {
     console.log(error);
   }
 };
+
+export const isRangeDate = async (start_date, end_date) => {
+  let today = await new Date().toISOString().slice(0, 10);
+  if (start_date < today) {
+    await Swal.fire({
+      icon: "error",
+      title: "Aksi Gagal",
+      text: "Tanggal Mulai Tidak Boleh Kurang Dari Tanggal Hari Ini",
+    });
+    return false;
+  } else if (start_date > end_date) {
+    await Swal.fire({
+      icon: "error",
+      title: "Aksi Gagal",
+      text: "Tanggal Mulai Tidak Boleh Lebih Dari Tanggal Selesai",
+    });
+    return false;
+  } else if (start_date == end_date) {
+    await Swal.fire({
+      icon: "error",
+      title: "Aksi Gagal",
+      text: "Tanggal Mulai Tidak Boleh Sama Dengan Tanggal Selesai",
+    });
+    return false;
+  } else {
+    return true;
+  }
+};
