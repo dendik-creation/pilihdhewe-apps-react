@@ -15,6 +15,7 @@ import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import Select from "react-select";
 
 export const EventEdit = () => {
   const id = useParams().id;
@@ -46,6 +47,11 @@ export const EventEdit = () => {
             misi: item.misi,
             event_id: item.event_id,
             status: "then",
+
+            // For React-Select
+            value: item.user.id,
+            label: `${item.user.name} | ${item.user.kelas.name}`,
+            gambar: item.user.gambar,
           }))
         ),
       });
@@ -67,7 +73,15 @@ export const EventEdit = () => {
   };
   useEffect(() => {
     httpGetCandidate().then((response) => {
-      setCandidateList(response);
+      setCandidateList(
+        response.map((item) => ({
+          value: item.id,
+          label: item.name,
+          kelas: item.kelas.name,
+          gambar: item.gambar,
+          target: "user_id",
+        }))
+      );
     });
     setTimeout(() => {
       setTransition(true);
@@ -76,10 +90,33 @@ export const EventEdit = () => {
 
   const handleChange = (e, index) => {
     const values = [...candidate];
-    values[index][e.target.name] = null;
-    values[index][e.target.name] = e.target.value;
+    values[index][e.target.name ? e.target.name : e.target] = e.target.value
+      ? e.target.value
+      : e.value;
     setCandidate(values);
   };
+
+  const CustomCandidateOption = ({ innerProps, isSelected, label, data }) => (
+    <div
+      {...innerProps}
+      className={`flex justify-start transition-all hover:transition-all my-2 px-2 py-1 mx-3 gap-4 items-center cursor-pointer rounded-md ${
+        isSelected
+          ? "bg-sky-500 hover:bg-sky-600 text-white"
+          : "bg-gray-50 hover:bg-gray-200"
+      }`}
+    >
+      <div className="w-8 h-8 overflow-hidden">
+        <img
+          src={data.gambar}
+          className="w-full h-full object-cover rounded-full"
+          alt={"Candidate Image"}
+        />
+      </div>
+      <span className="text-sm">
+        {label} | {data.kelas}
+      </span>
+    </div>
+  );
 
   const addCandidate = () => {
     setCandidate([
@@ -305,22 +342,21 @@ export const EventEdit = () => {
                             <label htmlFor="user_id" className="text-sm mb-1">
                               Nama
                             </label>
-                            <select
+                            <Select
                               required
+                              placeholder="Cari Kandidat"
+                              className="text-sm"
+                              options={candidateList}
                               name="user_id"
                               id="user_id"
-                              className="text-sm px-1.5 py-1 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
-                              value={_item.user_id}
+                              defaultValue={_item}
+                              value={candidate.user_id}
                               onChange={(e) => handleChange(e, index)}
-                            >
-                              <optgroup label="Pilih Kandidat">
-                                {candidateList.map((item, i) => (
-                                  <option key={i} value={item.id}>
-                                    {item.name} | {item.kelas.name}
-                                  </option>
-                                ))}
-                              </optgroup>
-                            </select>
+                              components={{ Option: CustomCandidateOption }}
+                              noOptionsMessage={() =>
+                                "Kandidat Tidak Ditemukan"
+                              }
+                            />
                           </div>
                           <div className="flex flex-col mb-4">
                             <label htmlFor="visi" className="text-sm mb-1">
