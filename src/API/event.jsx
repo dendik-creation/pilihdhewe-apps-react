@@ -213,9 +213,9 @@ export const httpGetMyVoteShow = async (id) => {
   }
 };
 
-export const isRangeDate = async (start_date, end_date) => {
+export const isRangeDate = async (start_date, end_date, isUpdate) => {
   let today = await new Date().toISOString().slice(0, 10);
-  if (start_date < today) {
+  if (start_date < today && !isUpdate) {
     await Swal.fire({
       icon: "error",
       title: "Aksi Gagal",

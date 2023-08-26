@@ -22,15 +22,6 @@
   color: white;
 }
 
-body.swal2-shown > [aria-hidden="true"] {
-  transition: all ease 0.3s;
-  filter: blur(6px);
-}
-
-body.swal2-shown > [aria-hidden="false"] {
-  transition: all ease 0.3s;
-}
-
 @keyframes slow-spin {
   0% {
     transform: rotateY(0deg);

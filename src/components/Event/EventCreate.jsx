@@ -16,6 +16,7 @@ export const EventCreate = () => {
     start_date: "",
     end_date: "",
   });
+  const [isUpdate, setIsUpdate] = useState(false);
   const [transition, setTransition] = useState(false);
   const [transitionCandidate, setTransitionCandidate] = useState(true);
   const [candidateState, setCandidateState] = useState(false);
@@ -94,7 +95,7 @@ export const EventCreate = () => {
 
   const beforeSubmit = (e) => {
     e.preventDefault();
-    if (isRangeDate(formData.start_date, formData.end_date)) {
+    if (isRangeDate(formData.start_date, formData.end_date, isUpdate)) {
       if (checkBtn) {
         let form = {
           name: formData.name,
@@ -144,7 +145,7 @@ export const EventCreate = () => {
           <div className="lg:mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 mx-6">
             <form onSubmit={(e) => beforeSubmit(e)}>
               <div className="block sm:block md:block lg:flex justify-start items-start w-full">
-                <div className="flex flex-col justify-start lg:me-10 lg:w-fit me-0 w-full items-start">
+                <div className="flex relative flex-col justify-start lg:me-10 lg:w-fit me-0 w-full items-start">
                   <div className="mb-4 flex flex-col lg:w-96 w-full gap-2">
                     <label htmlFor="name">Nama Event</label>
                     <input
@@ -199,15 +200,53 @@ export const EventCreate = () => {
 
                   <Transition
                     show={!candidateState}
-                    enter="transition transform duration-500"
-                    enterFrom="opacity-0 -translate-y-full"
-                    enterTo="opacity-100 translate-y-0"
-                    leave="transition transform duration-500"
-                    leaveFrom="opacity-100 translate-y-0"
-                    leaveTo="opacity-0 lg:translate-y-full -translate-y-full"
-                    className="mb-4 mt-2 flex flex-col lg:w-96 w-full gap-2 text-slate-700 text-sm py-1 bg-orange-100  rounded-lg text-center"
+                    enter="transition transform duration-300"
+                    enterFrom="opacity-0 scale-110"
+                    enterTo="opacity-100 scale-100"
+                    leave="transition transform duration-300"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-110"
+                    className="mb-4 mt-2 absolute left-0 -bottom-12 flex flex-col lg:w-96 w-full gap-2 text-slate-700 text-sm py-1 bg-orange-100  rounded-lg text-center"
                   >
                     Lengkapi data event untuk mengakses kandidat
+                  </Transition>
+
+                  <Transition
+                    show={candidateState}
+                    enter="transition transform duration-300"
+                    enterFrom="opacity-0 scale-110"
+                    enterTo="opacity-100 scale-100"
+                    leave="transition transform duration-300"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-110"
+                    className="w-full absolute -bottom-8 left-0"
+                  >
+                    <div className="hidden lg:flex text-sm flex-col justify-center items-center transition-all w-full">
+                      {checkBtn() ? (
+                        <div className="w-full flex justify-center items-center transition-all bg-orange-50 hover:bg-orange-300 rounded-lg px-2 py-1">
+                          <button
+                            id="btnSubmit"
+                            type="submit"
+                            className="flex justify-center transition-all w-full gap-3 items-center"
+                          >
+                            <span>Submit</span>
+                            <ArrowRightCircleIcon className="w-6 h-6" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex w-56 justify-center items-center transition-all bg-blue-50 rounded-lg px-2 py-1">
+                          <button
+                            id="btnSubmit"
+                            disabled
+                            type="submit"
+                            className="flex transition-all justify-center w-full gap-3 items-center cursor-not-allowed disabled:opacity-40"
+                          >
+                            <span>Setidaknya 2 Kandidat</span>
+                            <i className="bi bi-cone-striped"></i>
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </Transition>
                 </div>
 
@@ -332,7 +371,7 @@ export const EventCreate = () => {
                       leaveFrom="opacity-100 translate-y-0"
                       leaveTo="opacity-0 translate-y-12"
                     >
-                      <div className="flex flex-col justify-center items-center transition-all w-full">
+                      <div className="flex lg:hidden flex-col justify-center items-center transition-all w-full">
                         {checkBtn() ? (
                           <div className="w-full flex justify-center items-center transition-all bg-orange-50 hover:bg-orange-300 rounded-lg px-2 py-1">
                             <button
