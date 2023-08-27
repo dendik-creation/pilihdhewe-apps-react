@@ -7,7 +7,7 @@ export default function AboutComponent() {
   useEffect(() => {
     setTimeout(() => {
       setShow(true);
-      setTab(2);
+      setTab(1);
     }, 250);
   }, []);
 
