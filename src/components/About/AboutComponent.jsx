@@ -19,6 +19,15 @@ export default function AboutComponent() {
       }, 400);
     }
   };
+
+  const donwloadApp = () => {
+    let link = document.createElement("a");
+    link.href = "https://pilihdhewe.my.id/apps/PilihDhewe.apk";
+    link.download = "PilihDhewe.apk";
+    link.click();
+    link.remove();
+  };
+
   return (
     <>
       <link
@@ -250,14 +259,27 @@ export default function AboutComponent() {
                 App Version
               </h2>
               <div className="md:flex-row flex md:flex-wrap flex-col justify-around gap-5 md:gap-0 items-center">
-                <div className="flex justify-start gap-8 w-full items-center">
-                  <div className="flex justify-start gap-4 items-center">
-                    <i className="bi bi-globe2 text-xl text-gray-400"></i>
-                    <span className="text-gray-600 text-sm">1.0.0</span>
+                <div className="flex md:flex-row flex-col justify-start gap-4 w-full items-center">
+                  <div className="flex justify-start gap-8 w-full items-center">
+                    <div className="flex justify-start gap-4 items-center">
+                      <i className="bi bi-globe2 text-xl text-gray-400"></i>
+                      <span className="text-gray-600 text-sm">1.0.0</span>
+                    </div>
+                    <div className="flex justify-start gap-4 items-center">
+                      <i className="bi bi-android2 text-xl text-gray-400"></i>
+                      <span className="text-gray-600 text-sm">1.0.1</span>
+                    </div>
                   </div>
-                  <div className="flex justify-start gap-4 items-center">
-                    <i className="bi bi-android2 text-xl text-gray-400"></i>
-                    <span className="text-gray-600 text-sm">1.0.0</span>
+                  <div className="flex justify-start gap-8 w-full items-center">
+                    <div
+                      onClick={() => donwloadApp()}
+                      className="flex justify-start gap-4 cursor-pointer transition-all group items-center"
+                    >
+                      <i className="bi bi-download text-xl text-gray-400"></i>
+                      <span className="text-gray-600 text-sm group-hover:underline">
+                        Download Pilih Dhewe {"(Mobile)"}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
