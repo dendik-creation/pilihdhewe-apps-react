@@ -9,6 +9,7 @@ import {
   httpGetShow,
   httpUpdateCandidate,
   httpUpdatePut,
+  isCandidateUnique,
   isRangeDate,
 } from "../../API/event";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
@@ -82,7 +83,7 @@ export const EventEdit = () => {
       setCandidateList(
         response.map((item) => ({
           value: item.id,
-          label: item.name,
+          label: `${item.name} | ${item.kelas.name}`,
           kelas: item.kelas.name,
           gambar: item.gambar,
           target: "user_id",
@@ -118,9 +119,7 @@ export const EventEdit = () => {
           alt={"Candidate Image"}
         />
       </div>
-      <span className="text-sm">
-        {label} | {data.kelas}
-      </span>
+      <span className="text-sm">{label}</span>
     </div>
   );
 
@@ -156,38 +155,43 @@ export const EventEdit = () => {
       setCandidate(values);
     }
   };
+
   const beforeSubmit = (e) => {
     e.preventDefault();
     if (isRangeDate(formData.start_date, formData.end_date, isUpdate)) {
-      if (checkBtn) {
-        let candidateUpdate = candidate.filter((item) => item.status == "then");
-        let candidateNew = candidate.filter((item) => item.status == "new");
-        let form = {
-          name: formData.name,
-          description: formData.description,
-          start_date: formData.start_date,
-          end_date: formData.end_date,
-        };
-        Swal.fire({
-          title: "Update Event?",
-          text: "Anda dapat mengeditnya kembali bila ada kesalahan",
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Ya, Update!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            setUpdating(true);
-            candidateUpdate.map((item) => {
-              httpUpdateCandidate(item);
-            });
-            if (candidateNew.length > 0) {
-              httpCreateCandidate(candidateNew);
+      if (isCandidateUnique(candidate)) {
+        if (checkBtn) {
+          let candidateUpdate = candidate.filter(
+            (item) => item.status == "then"
+          );
+          let candidateNew = candidate.filter((item) => item.status == "new");
+          let form = {
+            name: formData.name,
+            description: formData.description,
+            start_date: formData.start_date,
+            end_date: formData.end_date,
+          };
+          Swal.fire({
+            title: "Update Event?",
+            text: "Anda dapat mengeditnya kembali bila ada kesalahan",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Update!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setUpdating(true);
+              candidateUpdate.map((item) => {
+                httpUpdateCandidate(item);
+              });
+              if (candidateNew.length > 0) {
+                httpCreateCandidate(candidateNew);
+              }
+              httpUpdatePut(form, navigate, id);
             }
-            httpUpdatePut(form, navigate, id);
-          }
-        });
+          });
+        }
       }
     }
   };
@@ -290,11 +294,11 @@ export const EventEdit = () => {
                   <Transition
                     show={!candidateState}
                     enter="transition transform duration-300"
-                    enterFrom="opacity-0 scale-110"
+                    enterFrom="opacity-0 scale-90"
                     enterTo="opacity-100 scale-100"
                     leave="transition transform duration-300"
                     leaveFrom="opacity-100 scale-100"
-                    leaveTo="opacity-0 scale-110"
+                    leaveTo="opacity-0 scale-90"
                     className="mb-4 mt-2 absolute left-0 -bottom-12 flex flex-col lg:w-96 w-full gap-2 text-slate-700 text-sm py-1 bg-orange-100  rounded-lg text-center"
                   >
                     Lengkapi data event untuk mengakses kandidat
@@ -303,11 +307,11 @@ export const EventEdit = () => {
                   <Transition
                     show={candidateState}
                     enter="transition transform duration-300"
-                    enterFrom="opacity-0 scale-110"
+                    enterFrom="opacity-0 scale-90"
                     enterTo="opacity-100 scale-100"
                     leave="transition transform duration-300"
                     leaveFrom="opacity-100 scale-100"
-                    leaveTo="opacity-0 scale-110"
+                    leaveTo="opacity-0 scale-90"
                     className="w-full absolute -bottom-8 left-0"
                   >
                     <div className="hidden lg:flex text-sm flex-col justify-center items-center transition-all w-full">

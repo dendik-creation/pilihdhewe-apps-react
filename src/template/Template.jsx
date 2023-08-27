@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -34,7 +34,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Dashboard() {
+export default function Template() {
+  const [loadingOut, setLadingOut] = useState(false);
   const credentials = {
     name: ACTIVE_USER.user.name,
     number_card: ACTIVE_USER.user.number_card,
@@ -91,9 +92,22 @@ export default function Dashboard() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, Logout!",
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        Logout();
+        Swal.fire({
+          title: "Loading",
+          text: "Menghapus Kredensial & Sesi Login Anda",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+            setTimeout(() => Logout(), 1500);
+          },
+        });
       }
     });
   };

@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import TitleComponent from "../Partials/TitleComponent";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
-import { httpCreatePost, httpGetCandidate, isRangeDate } from "../../API/event";
+import {
+  httpCreatePost,
+  httpGetCandidate,
+  isCandidateUnique,
+  isRangeDate,
+} from "../../API/event";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
@@ -96,15 +101,17 @@ export const EventCreate = () => {
   const beforeSubmit = (e) => {
     e.preventDefault();
     if (isRangeDate(formData.start_date, formData.end_date, isUpdate)) {
-      if (checkBtn) {
-        let form = {
-          name: formData.name,
-          description: formData.description,
-          start_date: formData.start_date,
-          end_date: formData.end_date,
-          candidates: candidate,
-        };
-        httpCreatePost(form, navigate);
+      if (isCandidateUnique(candidate)) {
+        if (checkBtn) {
+          let form = {
+            name: formData.name,
+            description: formData.description,
+            start_date: formData.start_date,
+            end_date: formData.end_date,
+            candidates: candidate,
+          };
+          httpCreatePost(form, navigate);
+        }
       }
     }
   };

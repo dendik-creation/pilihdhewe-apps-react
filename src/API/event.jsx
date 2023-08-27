@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ACTIVE_USER, APP_URL, PUBLIC_URL } from "../utils/constant";
 import Swal from "sweetalert2";
 
@@ -239,4 +239,20 @@ export const isRangeDate = async (start_date, end_date, isUpdate) => {
   } else {
     return true;
   }
+};
+
+export const isCandidateUnique = async (candidate) => {
+  const uniqueId = await {};
+  candidate.map((item) => {
+    if (uniqueId[item.user_id]) {
+      Swal.fire({
+        icon: "error",
+        title: "Aksi Gagal",
+        text: "Kandidat Harus Berbeda Satu Sama Lain",
+      });
+      return false;
+    }
+    uniqueId[item.user_id] = true;
+  });
+  return true;
 };
