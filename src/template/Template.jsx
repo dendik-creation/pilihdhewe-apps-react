@@ -154,27 +154,19 @@ export default function Dashboard() {
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
-                    {ACTIVE_USER.user.role == "siswa" ? (
-                      <div className="flex items-center justify-start gap-2">
-                        <LinkIcon className=" text-slate-200 h-8 w-8" />
-                        <NavLink
-                          to={"/events"}
-                          className="text-slate-100 font-semibold"
-                        >
+                    <div className="flex items-center justify-start gap-2">
+                      <LinkIcon className=" text-slate-200 h-8 w-8" />
+                      <NavLink
+                        to={`${
+                          ACTIVE_USER.user.role == "siswa" ? "/events" : "/"
+                        }`}
+                        className="text-slate-100 font-semibold"
+                      >
+                        <span className="block md:hidden lg:block">
                           {APP_NAME}
-                        </NavLink>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-start gap-2">
-                        <LinkIcon className=" text-slate-200 h-8 w-8" />
-                        <NavLink
-                          to={"/"}
-                          className="text-slate-100 font-semibold"
-                        >
-                          {APP_NAME}
-                        </NavLink>
-                      </div>
-                    )}
+                        </span>
+                      </NavLink>
+                    </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-12">
                         {isAllowNav.map((item, i) => (
@@ -237,7 +229,7 @@ export default function Dashboard() {
                                     onClick={item.click}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
-                                      item.current ? "bg-gray-300" : "",
+                                      item.current ? "bg-blue-200" : "",
                                       "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
                                     )}
                                     aria-current={
