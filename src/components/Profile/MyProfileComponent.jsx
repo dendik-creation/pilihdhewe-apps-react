@@ -140,168 +140,186 @@ export default function MyProfileComponent(props) {
   };
   return (
     <>
-      <Transition
-        show={show}
-        enter="transition transform duration-300 delay-300"
-        enterFrom="opacity-0 md:translate-y-0 md:-translate-x-12"
-        enterTo="opacity-100 md:translate-y-0 md:translate-x-0"
-        leave="transition transform duration-300"
-        leaveFrom="opacity-100 md:translate-y-0 md:translate-x-0"
-        leaveTo="opacity-0 md:translate-y-0 md:translate-x-12"
-        className="text-xl font-bold mb-9 md:mb-5 bg-emerald-50 px-4 py-2 rounded-md w-full md:w-fit flex justify-center items-center"
-      >
-        Profil Saya
-      </Transition>
-      <div className="flex flex-col w-full mb-20 md:mb-0">
-        <div className="flex flex-col md:flex-row md:ms-4 relative justify-start items-center gap-8 mb-8">
-          <div className="relative group">
-            <div className="rounded-full ring-4 ring-offset-2 ring-orange-200 overflow-hidden w-48 h-48 md:w-56 md:h-56 shadow-lg hover:transition-all transition-all">
-              <Transition
-                show={show}
-                enter="transition transform duration-300 delay-300"
-                enterFrom="opacity-0 scale-125"
-                enterTo="opacity-100 scale-100"
-                leave="transition transform duration-300"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-50"
-                as="img"
-                src={ACTIVE_USER.user.gambar}
-                className="w-full h-full cursor-pointer hover:brightness-75 object-cover transition-all hover:scale-110 group-hover:transition-all"
-                alt="User Profile"
-                onClick={() => showImageDetail(ACTIVE_USER.user.gambar)}
-              />
+      {initData != "" ? (
+        <div className="">
+          <Transition
+            show={show}
+            enter="transition transform duration-300 delay-300"
+            enterFrom="opacity-0 md:translate-y-0 md:-translate-x-12"
+            enterTo="opacity-100 md:translate-y-0 md:translate-x-0"
+            leave="transition transform duration-300"
+            leaveFrom="opacity-100 md:translate-y-0 md:translate-x-0"
+            leaveTo="opacity-0 md:translate-y-0 md:translate-x-12"
+            className="text-xl font-bold mb-9 md:mb-5 bg-emerald-50 px-4 py-2 rounded-md w-full md:w-fit flex justify-center items-center"
+          >
+            Profil Saya
+          </Transition>
+          <div className="flex flex-col w-full mb-20 md:mb-0">
+            <div className="flex flex-col md:flex-row md:ms-4 relative justify-start items-center gap-8 mb-8">
+              <div className="relative group">
+                <div className="rounded-full ring-4 ring-offset-2 ring-orange-200 overflow-hidden w-48 h-48 md:w-56 md:h-56 shadow-lg hover:transition-all transition-all">
+                  <Transition
+                    show={show}
+                    enter="transition transform duration-300 delay-300"
+                    enterFrom="opacity-0 scale-125"
+                    enterTo="opacity-100 scale-100"
+                    leave="transition transform duration-300"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-50"
+                    as="img"
+                    src={ACTIVE_USER.user.gambar}
+                    className="w-full h-full cursor-pointer hover:brightness-75 object-cover transition-all hover:scale-110 group-hover:transition-all"
+                    alt="User Profile"
+                    onClick={() => showImageDetail(ACTIVE_USER.user.gambar)}
+                  />
+                </div>
+                <div
+                  className="absolute md:w-14 md:h-14 w-12 h-12 ring-4 ring-offset-2 ring-orange-200 hover:bg-gray-800 hover:text-white transition-all  hover:transition-all overflow-hidden rounded-full bottom-3.5 cursor-pointer right-1 z-20 text-dark p-2.5 md:p-3.5 bg-emerald-200"
+                  onClick={() => setModalImage(true)}
+                >
+                  <CameraIcon className=""></CameraIcon>
+                </div>
+              </div>
+              <div className="flex flex-col justify-start">
+                <div className="text-3xl font-semibold mb-2">
+                  {initData.name}
+                </div>
+                <div className="flex text-md justify-start gap-3 mb-1">
+                  <i className="bi bi-person-vcard text-slate-400"></i>
+                  <span className="font-medium">{initData.number_card}</span>
+                </div>
+                {initData.kelas == null ? (
+                  <div className="flex text-md justify-start gap-3">
+                    <i className="bi bi-person-workspace text-slate-400"></i>
+                    <span className="font-medium">
+                      {ACTIVE_USER.user.role == "admin" ? "Admin Level" : ""}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex text-md justify-start gap-3">
+                    <i className="bi bi-person-workspace text-slate-400"></i>
+                    <span className="font-medium">{initData.kelas.name}</span>
+                  </div>
+                )}
+              </div>
             </div>
-            <div
-              className="absolute md:w-14 md:h-14 w-12 h-12 ring-4 ring-offset-2 ring-orange-200 hover:bg-gray-800 hover:text-white transition-all  hover:transition-all overflow-hidden rounded-full bottom-3.5 cursor-pointer right-1 z-20 text-dark p-2.5 md:p-3.5 bg-emerald-200"
-              onClick={() => setModalImage(true)}
+            <form
+              onSubmit={(e) => {
+                beforeSubmit(e);
+              }}
             >
-              <CameraIcon className=""></CameraIcon>
-            </div>
-          </div>
-          <div className="flex flex-col justify-start">
-            <div className="text-3xl font-semibold mb-2">{initData.name}</div>
-            <div className="flex text-md justify-start gap-3 mb-1">
-              <i className="bi bi-person-vcard text-slate-400"></i>
-              <span className="font-medium">{initData.number_card}</span>
-            </div>
-            {initData.kelas == null ? (
-              <div className="flex text-md justify-start gap-3">
-                <i className="bi bi-person-workspace text-slate-400"></i>
-                <span className="font-medium">
-                  {ACTIVE_USER.user.role == "admin" ? "Admin Level" : ""}
-                </span>
+              <div className="block md:flex flex-col md:flex-row w-full justify-start gap-5 items-start">
+                <div className="flex flex-col flex-grow">
+                  <div className="mb-5 flex flex-col">
+                    <label htmlFor="name" className="mb-1">
+                      Nama
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={data.name}
+                      onChange={(e) => handleChange(e)}
+                      className="text-sm w-full px-2 py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
+                    />
+                  </div>
+
+                  <div className="mb-5 flex flex-col">
+                    <label htmlFor="number_card" className="mb-1">
+                      Number Card - <span className="text-sm">Read Only</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="number_card"
+                      id="number_card"
+                      value={data.number_card}
+                      onChange={(e) => handleChange(e)}
+                      disabled
+                      className="text-sm px-2 w-full py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col flex-grow">
+                  {ACTIVE_USER.user.role == "siswa" ? (
+                    <div className="mb-5 flex flex-col">
+                      <label htmlFor="kelas" className="mb-1">
+                        Kelas
+                      </label>
+                      <select
+                        name="kelas"
+                        id="kelas"
+                        value={data.kelas}
+                        onChange={(e) => handleChange(e)}
+                        className="text-sm w-full px-2 py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
+                      >
+                        <AvailableKelas />
+                      </select>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="mb-5 flex flex-col">
+                    <label htmlFor="gender" className="mb-1">
+                      Gender
+                    </label>
+                    <select
+                      type="text"
+                      name="gender"
+                      id="gender"
+                      value={data.gender}
+                      onChange={(e) => handleChange(e)}
+                      className="text-sm px-2 w-full py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
+                    >
+                      <option
+                        value="Rahasia"
+                        disabled={ACTIVE_USER.user.role == "siswa"}
+                        hidden={ACTIVE_USER.user.role == "siswa"}
+                      >
+                        Rahasia
+                      </option>
+                      <option value="Laki-Laki">Laki-laki</option>
+                      <option value="Perempuan">Perempuan</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <div className="flex text-md justify-start gap-3">
-                <i className="bi bi-person-workspace text-slate-400"></i>
-                <span className="font-medium">{initData.kelas.name}</span>
-              </div>
-            )}
+              <button
+                type="submit"
+                disabled={!btnSubmit || isLoadingUpdate}
+                className={`w-full flex justify-center items-center gap-4 bg-blue-200 px-2 py-1 rounded-md transition-all ${
+                  !btnSubmit
+                    ? "opacity-30"
+                    : isLoadingUpdate
+                    ? "bg-teal-200"
+                    : ""
+                } disabled:hover:bg-blue-200 disabled:hover:text-black disabled:cursor-not-allowed ${
+                  btnSubmit ? "hover:bg-gray-800" : ""
+                } hover:transition-all hover:text-white`}
+              >
+                <span>{isLoadingUpdate ? "Updating" : "Update"}</span>
+                {isLoadingUpdate ? (
+                  <div className="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </button>
+            </form>
           </div>
         </div>
-        <form
-          onSubmit={(e) => {
-            beforeSubmit(e);
-          }}
-        >
-          <div className="block md:flex flex-col md:flex-row w-full justify-start gap-5 items-start">
-            <div className="flex flex-col flex-grow">
-              <div className="mb-5 flex flex-col">
-                <label htmlFor="name" className="mb-1">
-                  Nama
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={data.name}
-                  onChange={(e) => handleChange(e)}
-                  className="text-sm w-full px-2 py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
-                />
-              </div>
-
-              <div className="mb-5 flex flex-col">
-                <label htmlFor="number_card" className="mb-1">
-                  Number Card - <span className="text-sm">Read Only</span>
-                </label>
-                <input
-                  type="text"
-                  name="number_card"
-                  id="number_card"
-                  value={data.number_card}
-                  onChange={(e) => handleChange(e)}
-                  disabled
-                  className="text-sm px-2 w-full py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col flex-grow">
-              {ACTIVE_USER.user.role == "siswa" ? (
-                <div className="mb-5 flex flex-col">
-                  <label htmlFor="kelas" className="mb-1">
-                    Kelas
-                  </label>
-                  <select
-                    name="kelas"
-                    id="kelas"
-                    value={data.kelas}
-                    onChange={(e) => handleChange(e)}
-                    className="text-sm w-full px-2 py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
-                  >
-                    <AvailableKelas />
-                  </select>
-                </div>
-              ) : (
-                ""
-              )}
-              <div className="mb-5 flex flex-col">
-                <label htmlFor="gender" className="mb-1">
-                  Gender
-                </label>
-                <select
-                  type="text"
-                  name="gender"
-                  id="gender"
-                  value={data.gender}
-                  onChange={(e) => handleChange(e)}
-                  className="text-sm px-2 w-full py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
-                >
-                  <option
-                    value="Rahasia"
-                    disabled={ACTIVE_USER.user.role == "siswa"}
-                    hidden={ACTIVE_USER.user.role == "siswa"}
-                  >
-                    Rahasia
-                  </option>
-                  <option value="Laki-Laki">Laki-laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                </select>
-              </div>
-            </div>
+      ) : (
+        <div className="flex justify-start items-center gap-4">
+          <span>Loading Content</span>
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
           </div>
-          <button
-            type="submit"
-            disabled={!btnSubmit || isLoadingUpdate}
-            className={`w-full flex justify-center items-center gap-4 bg-blue-200 px-2 py-1 rounded-md transition-all ${
-              !btnSubmit ? "opacity-30" : isLoadingUpdate ? "bg-teal-200" : ""
-            } disabled:hover:bg-blue-200 disabled:hover:text-black disabled:cursor-not-allowed ${
-              btnSubmit ? "hover:bg-gray-800" : ""
-            } hover:transition-all hover:text-white`}
-          >
-            <span>{isLoadingUpdate ? "Updating" : "Update"}</span>
-            {isLoadingUpdate ? (
-              <div className="lds-ellipsis">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-            ) : (
-              ""
-            )}
-          </button>
-        </form>
-      </div>
+        </div>
+      )}
 
       {/* Modal Upload Image */}
       <Transition

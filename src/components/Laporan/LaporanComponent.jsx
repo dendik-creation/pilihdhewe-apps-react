@@ -182,7 +182,13 @@ export default function LaporanComponent() {
           </div>
         </div>
       ) : (
-        ""
+        <div className="flex justify-start items-center gap-4">
+          <span>Loading Content</span>
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       )}
     </>
   );

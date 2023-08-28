@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 import { Login } from "../API/auth";
-import { PUBLIC_URL } from "../utils/constant";
 export default function LoginPages() {
   const [credentials, setCredentials] = useState({
     number_card: "",
@@ -11,9 +9,17 @@ export default function LoginPages() {
   const [isShow, setShow] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isSuccess, setSuccess] = useState(false);
+  const [isIcon, setIcon] = useState(null);
+  const checkTheme = window.matchMedia("(prefers-color-scheme: dark)");
 
   useEffect(() => {
     setShow(true);
+
+    if (checkTheme.matches) {
+      setIcon("./pilihdhewe-icons-white.svg");
+    } else {
+      setIcon("./pilihdhewe-icons-dark.svg");
+    }
   }, []);
 
   const { number_card, password } = credentials;
@@ -42,31 +48,12 @@ export default function LoginPages() {
             leave="transition transform duration-500"
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-50"
-            className="flex items-center gap-2 md:gap-4 mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+            className="flex items-center flex-col justify-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
           >
-            <NavLink to={PUBLIC_URL} target="_blank">
-              <div className="svg-container-login">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                  className="md:w-28 md:h-28 w-24 h-24 dark:text-white/80 hover:text-primary-600 text-primary-400 hover:transition-all transition-all hover:drop-shadow-xl dark:hover:drop-shadow-[0_0_2px_rgba(255,0,0,.2)] building-svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
-                  ></path>
-                </svg>
-              </div>
-            </NavLink>
-            <div className="flex flex-col cursor-default justify-center items-center">
-              <span className="text-3xl">Pilih</span>
-              <span className="text-3xl">Dhewe</span>
+            <div className="svg-container-login">
+              <img src={isIcon} alt="" className="animate-icon" />
             </div>
+            <div className="text-3xl">Pilih Dhewe</div>
           </Transition>
 
           <Transition

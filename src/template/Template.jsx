@@ -169,7 +169,11 @@ export default function Template() {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex items-center justify-start gap-2">
-                      <LinkIcon className=" text-slate-200 h-8 w-8" />
+                      <img
+                        src="/pilihdhewe-icons-white.svg"
+                        className="w-9 h-9"
+                        alt=""
+                      />
                       <NavLink
                         to={`${
                           ACTIVE_USER.user.role == "siswa" ? "/events" : "/"

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Transition } from "@headlessui/react";
+import { PUBLIC_URL } from "../../utils/constant";
 export default function AboutComponent() {
   const [show, setShow] = useState(false);
   const [tab, setTab] = useState(null);
@@ -22,7 +23,7 @@ export default function AboutComponent() {
 
   const donwloadApp = () => {
     let link = document.createElement("a");
-    link.href = "https://pilihdhewe.my.id/apps/PilihDhewe.apk";
+    link.href = `${PUBLIC_URL}/apps/PilihDhewe.apk`;
     link.download = "PilihDhewe.apk";
     link.click();
     link.remove();
@@ -44,23 +45,16 @@ export default function AboutComponent() {
             leave="transition transform duration-300"
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-90"
-            className="svg-container"
+            className="svg-container flex flex-col"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
-              className="md:w-64 md:h-64 w-32 h-32 text-gray-800 hover:text-emerald-400 hover:transition-all transition-all hover:drop-shadow-xl dark:hover:drop-shadow-[0_0_2px_rgba(255,0,0,.2)] building-svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
-              ></path>
-            </svg>
+            <img
+              src="./pilihdhewe-icons-dark.svg"
+              className="animate-icon"
+              alt=""
+            />
+            <div className="font-medium text-xl text-gray-600">
+              Pilih Dhewe Apps
+            </div>
           </Transition>
         </div>
         <div className="relative overflow-hidden flex flex-col gap-8">
@@ -248,7 +242,7 @@ export default function AboutComponent() {
                   </div>
                   <div className="flex justify-center text-gray-600 items-center gap-3">
                     <i className="bi bi-tools"></i>
-                    <span className="text-sm">Flutter 3.10.6</span>
+                    <span className="text-sm">Flutter 3.10.3</span>
                   </div>
                 </div>
               </div>
@@ -263,7 +257,7 @@ export default function AboutComponent() {
                   <div className="flex justify-start gap-8 w-full items-center">
                     <div className="flex justify-start gap-4 items-center">
                       <i className="bi bi-globe2 text-xl text-gray-400"></i>
-                      <span className="text-gray-600 text-sm">1.0.0</span>
+                      <span className="text-gray-600 text-sm">1.0.2</span>
                     </div>
                     <div className="flex justify-start gap-4 items-center">
                       <i className="bi bi-android2 text-xl text-gray-400"></i>
