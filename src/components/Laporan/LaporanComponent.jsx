@@ -65,60 +65,66 @@ export default function LaporanComponent() {
             leave="transition transform duration-300"
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-90"
-            className=" w-full grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 py-4 shadow-md rounded-md mb-8 md:mx-0"
+            className="w-full rounded-md mb-8"
           >
-            <div className="flex flex-col items-start justify-around" id="info">
-              <div className="">
-                <h2 className="text-xl font-semibold mb-5">{recent.name}</h2>
-                <div className="flex items-center justify-start gap-2 mb-2">
-                  <i className="bi bi-activity"></i>
-                  <span className="text-slate-700">{recent.status}</span>
-                </div>
-                <div className="flex items-center justify-start gap-2 mb-2">
-                  <i className="bi bi-people"></i>
-                  <span className="text-slate-700">
-                    {recent.candidates.length} Kandidat
-                  </span>
-                </div>
-                <div className="flex items-center justify-start gap-2 mb-2">
-                  <i className="bi bi-calendar2-event"></i>
-                  <span className="text-slate-700">
-                    {recent.start_date} - {recent.end_date}
-                  </span>
-                </div>
-                <div className="flex items-center justify-start gap-2 mb-2">
-                  <i className="bi bi-pin-angle"></i>
-                  <span className="text-slate-700">
-                    {recent.partisipan.length} / {recent.total_partisipan} Telah
-                    Berpartisipasi
-                  </span>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => beforeDetail(recent.id)}
-                className={`w-full flex justify-center hover:text-white hover:transition-all transition-all rounded-md px-2 gap-3 py-1 mt-2 ${
-                  recent.status == "Inactive"
-                    ? "bg-yellow-300 hover:bg-yellow-500"
-                    : recent.status == "Active"
-                    ? "bg-blue-300 hover:bg-blue-500"
-                    : recent.status == "Selesai"
-                    ? "bg-red-300 hover:bg-red-500"
-                    : ""
-                }`}
+            <div className="mx-4 grid grid-cols-1 lg:grid-cols-2 md:mx-0 gap-8 px-4 py-4 shadow-md md:w-full">
+              <div
+                className="flex flex-col items-start justify-around"
+                id="info"
               >
-                <i className="bi bi-person-gear"></i>
-                <span className="">Check Event</span>
-              </button>
-            </div>
+                <div className="">
+                  <h2 className="text-xl font-semibold mb-5">{recent.name}</h2>
+                  <div className="flex items-center justify-start gap-2 mb-2">
+                    <i className="bi bi-activity"></i>
+                    <span className="text-slate-700">{recent.status}</span>
+                  </div>
+                  <div className="flex items-center justify-start gap-2 mb-2">
+                    <i className="bi bi-people"></i>
+                    <span className="text-slate-700">
+                      {recent.candidates.length} Kandidat
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-start gap-2 mb-2">
+                    <i className="bi bi-calendar2-event"></i>
+                    <span className="text-slate-700">
+                      {recent.start_date} - {recent.end_date}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-start gap-2 mb-2">
+                    <i className="bi bi-pin-angle"></i>
+                    <span className="text-slate-700">
+                      {recent.partisipan.length} / {recent.total_partisipan}{" "}
+                      Telah Berpartisipasi
+                    </span>
+                  </div>
+                </div>
 
-            <div className="relative">
-              <Bar
-                data={barChart.data}
-                options={barChart.options}
-                width={500}
-                height={300}
-              />
+                <button
+                  type="button"
+                  onClick={() => beforeDetail(recent.id)}
+                  className={`w-full flex justify-center hover:text-white hover:transition-all transition-all rounded-md px-2 gap-3 py-1 mt-2 ${
+                    recent.status == "Inactive"
+                      ? "bg-yellow-300 hover:bg-yellow-500"
+                      : recent.status == "Active"
+                      ? "bg-blue-300 hover:bg-blue-500"
+                      : recent.status == "Selesai"
+                      ? "bg-red-300 hover:bg-red-500"
+                      : ""
+                  }`}
+                >
+                  <i className="bi bi-person-gear"></i>
+                  <span className="">Check Event</span>
+                </button>
+              </div>
+
+              <div className="relative">
+                <Bar
+                  data={barChart.data}
+                  options={barChart.options}
+                  width={500}
+                  height={300}
+                />
+              </div>
             </div>
           </Transition>
 
@@ -128,7 +134,7 @@ export default function LaporanComponent() {
                 show={show}
                 key={i}
                 enter={`transition transform duration-300 delay-[${
-                  (i + 2) * 100
+                  i++ * 100
                 }ms]`}
                 enterFrom="opacity-0  translate-y-12"
                 enterTo="opacity-100  translate-y-0"
@@ -182,8 +188,8 @@ export default function LaporanComponent() {
           </div>
         </div>
       ) : (
-        <div className="flex justify-start items-center gap-4">
-          <span>Loading Content</span>
+        <div className="flex justify-center w-full items-center gap-4">
+          <span>Loading</span>
           <div className="lds-ripple">
             <div></div>
             <div></div>

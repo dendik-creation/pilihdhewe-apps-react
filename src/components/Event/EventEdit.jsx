@@ -552,8 +552,8 @@ export const EventEdit = () => {
                 </div>
               </form>
             ) : (
-              <div className="flex justify-start items-center gap-4">
-                <span>Loading Content</span>
+              <div className="flex justify-center w-full items-center gap-4">
+                <span>Loading</span>
                 <div className="lds-ripple">
                   <div></div>
                   <div></div>

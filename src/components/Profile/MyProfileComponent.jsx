@@ -136,11 +136,11 @@ export default function MyProfileComponent(props) {
       kelas_id: data.kelas,
     };
 
-    httpUpdateMe(form, initData.id, setLoadingUpdate);
+    httpUpdateMe(form, initData.id, setLoadingUpdate, setBtnSubmit);
   };
   return (
     <>
-      {initData != "" ? (
+      {data != "" ? (
         <div className="">
           <Transition
             show={show}
@@ -184,19 +184,19 @@ export default function MyProfileComponent(props) {
                 <div className="text-3xl font-semibold mb-2">
                   {initData.name}
                 </div>
-                <div className="flex text-md justify-start gap-3 mb-1">
+                <div className="flex text-md justify-center md:justify-start gap-3 mb-1">
                   <i className="bi bi-person-vcard text-slate-400"></i>
                   <span className="font-medium">{initData.number_card}</span>
                 </div>
                 {initData.kelas == null ? (
-                  <div className="flex text-md justify-start gap-3">
+                  <div className="flex text-md justify-center md:justify-start gap-3">
                     <i className="bi bi-person-workspace text-slate-400"></i>
                     <span className="font-medium">
                       {ACTIVE_USER.user.role == "admin" ? "Admin Level" : ""}
                     </span>
                   </div>
                 ) : (
-                  <div className="flex text-md justify-start gap-3">
+                  <div className="flex text-md justify-center md:justify-start gap-3">
                     <i className="bi bi-person-workspace text-slate-400"></i>
                     <span className="font-medium">{initData.kelas.name}</span>
                   </div>

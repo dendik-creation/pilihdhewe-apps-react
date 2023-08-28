@@ -20,6 +20,11 @@ export default function EventDetailComponent() {
     httpGetShow(id).then((response) => {
       setEvent(response);
       setCandidates(response.candidates);
+      if (ACTIVE_USER.user.role == "admin") {
+        setTimeout(() => {
+          setTransition(true);
+        }, 250);
+      }
     });
 
     if (ACTIVE_USER.user.role == "siswa") {
@@ -29,15 +34,19 @@ export default function EventDetailComponent() {
             if (response.data.event_id == id) {
               setVoteState(true);
               setMeVote(response.data);
+              setTimeout(() => {
+                setTransition(true);
+              }, 250);
             }
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setTimeout(() => {
+            setTransition(true);
+          }, 250);
+        });
     }
-
-    setTimeout(() => {
-      setTransition(true);
-    }, 250);
   }, []);
 
   useEffect(() => {
@@ -173,9 +182,7 @@ export default function EventDetailComponent() {
                 </div>
               </Transition>
 
-              {event.status == "Active" ||
-              ACTIVE_USER.user.role == "admin" ||
-              event.status == "Active" ? (
+              {event.status == "Active" || ACTIVE_USER.user.role == "admin" ? (
                 <div className="">
                   {!isMeVote ? (
                     <form
@@ -306,10 +313,10 @@ export default function EventDetailComponent() {
                         {selected ? (
                           <Transition
                             show={btnVote}
-                            enter="transition transform duration-500 delay-[100ms]"
+                            enter="transition transform duration-300"
                             enterFrom="opacity-0 translate-y-12"
                             enterTo="opacity-100 translate-y-0"
-                            leave="transition transform duration-500"
+                            leave="transition transform duration-300"
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 lg:translate-y-12 -translate-y-12"
                             className="w-full flex justify-center items-center"
@@ -342,10 +349,10 @@ export default function EventDetailComponent() {
                     <div className="mx-3 sm:mx-auto">
                       <Transition
                         show={transition}
-                        enter="transition transform duration-500 delay-[1000ms]"
+                        enter="transition transform duration-300 delay-[300ms]"
                         enterFrom="opacity-0 translate-y-12"
                         enterTo="opacity-100 translate-y-0"
-                        leave="transition transform duration-500"
+                        leave="transition transform duration-300"
                         leaveFrom="opacity-100 translate-y-0"
                         leaveTo="opacity-0 lg:translate-y-12 -translate-y-12"
                         className="flex flex-col bg-teal-50 shadow-inner px-5 py-5 mb-6 rounded-lg"
@@ -484,10 +491,10 @@ export default function EventDetailComponent() {
                   <div className="mx-3 mt-5 sm:mx-auto">
                     <Transition
                       show={transition}
-                      enter="transition transform duration-500 delay-[200ms]"
+                      enter="transition transform duration-300"
                       enterFrom="opacity-0 translate-y-12"
                       enterTo="opacity-100 translate-y-0"
-                      leave="transition transform duration-500"
+                      leave="transition transform duration-300"
                       leaveFrom="opacity-100 translate-y-0"
                       leaveTo="opacity-0 lg:translate-y-12 -translate-y-12"
                       className="flex flex-col bg-teal-50 shadow-inner px-5 py-5 rounded-lg mb-3"
@@ -536,8 +543,8 @@ export default function EventDetailComponent() {
               )}
             </div>
           ) : (
-            <div className="flex justify-start items-center gap-4">
-              <span>Loading Content</span>
+            <div className="flex justify-center w-full items-center gap-4">
+              <span>Loading</span>
               <div className="lds-ripple">
                 <div></div>
                 <div></div>

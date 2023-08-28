@@ -30,9 +30,6 @@ export default class SiswaComponent extends Component {
   componentDidMount() {
     this.getSiswa();
     this.getListKelas();
-    setTimeout(() => {
-      this.setState({ transition: true });
-    }, 800);
   }
 
   getSiswa() {
@@ -45,6 +42,9 @@ export default class SiswaComponent extends Component {
       .then((response) => {
         let siswa = response.data;
         this.setState({ siswa });
+        setTimeout(() => {
+          this.setState({ transition: true });
+        }, 250);
       })
       .catch((err) => {
         console.log(err);
@@ -534,8 +534,8 @@ export default class SiswaComponent extends Component {
                             <li key={i} className="">
                               <Transition
                                 show={this.state.transition}
-                                enter={`transform transition duration-[200ms] delay-[${
-                                  i + 1 * 100
+                                enter={`transform transition duration-300 delay-[${
+                                  i++ * 100
                                 }ms]`}
                                 enterFrom="transform opacity-0 scale-110"
                                 enterTo="transform opacity-100 scale-100"
@@ -693,8 +693,8 @@ export default class SiswaComponent extends Component {
             </div>
           </div>
         ) : (
-          <div className="flex justify-start items-center gap-4">
-            <span>Loading Content</span>
+          <div className="flex justify-center w-full items-center gap-4">
+            <span>Loading</span>
             <div className="lds-ripple">
               <div></div>
               <div></div>

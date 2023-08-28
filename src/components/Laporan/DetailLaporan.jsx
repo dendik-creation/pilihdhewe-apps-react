@@ -45,11 +45,11 @@ export default function DetailLaporan() {
         setCandidate(
           res.candidates.sort((a, b) => b.total_vote - a.total_vote)
         );
+        setTimeout(() => {
+          setShow(true);
+        }, 250);
       })
       .catch((err) => console.log(err));
-    setTimeout(() => {
-      setShow(true);
-    }, 250);
   }, []);
 
   return (
@@ -244,8 +244,8 @@ export default function DetailLaporan() {
               </div>
             </div>
           ) : (
-            <div className="flex justify-start items-center gap-4">
-              <span>Loading Content</span>
+            <div className="flex justify-center w-full items-center gap-4">
+              <span>Loading</span>
               <div className="lds-ripple">
                 <div></div>
                 <div></div>

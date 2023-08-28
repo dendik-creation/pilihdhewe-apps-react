@@ -35,7 +35,6 @@ function classNames(...classes) {
 }
 
 export default function Template() {
-  const [loadingOut, setLadingOut] = useState(false);
   const credentials = {
     name: ACTIVE_USER.user.name,
     number_card: ACTIVE_USER.user.number_card,
@@ -105,7 +104,7 @@ export default function Template() {
           allowEscapeKey: false,
           didOpen: () => {
             Swal.showLoading();
-            setTimeout(() => Logout(), 1500);
+            setTimeout(() => Logout(), 1200);
           },
         });
       }
@@ -335,8 +334,10 @@ export default function Template() {
                         key={item.name}
                         as="button"
                         onClick={item.click}
-                        className={`flex w-full rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white ${
-                          item.current ? "bg-gray-700 text-gray-100" : ""
+                        className={`flex w-full rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white ${
+                          item.current
+                            ? "bg-gray-700 text-white"
+                            : "text-gray-300/80"
                         }`}
                         aria-current={item.current ? "page" : undefined}
                       >

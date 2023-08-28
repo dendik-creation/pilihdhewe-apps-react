@@ -23,14 +23,14 @@ export default function EventComponent() {
   useEffect(() => {
     httpGetIndex().then((response) => {
       setEvents(response);
+      setTimeout(() => {
+        setTransition(true);
+      }, 250);
     });
 
     httpGetMyVoteIndex().then((response) => {
       setVotes(response);
     });
-    setTimeout(() => {
-      setTransition(true);
-    }, 250);
   }, []);
 
   const serachHandle = (e) => {
@@ -138,8 +138,8 @@ export default function EventComponent() {
                   <Transition
                     key={item.id}
                     show={transition}
-                    enter={`transform transition ${`duration-[${
-                      i + 4 * 200
+                    enter={`transform transition duration-300 ${`delay-[${
+                      i++ * 100
                     }ms]`}`}
                     enterFrom="opacity-0 translate-y-12"
                     enterTo="opacity-100 translate-y-0"
@@ -307,8 +307,8 @@ export default function EventComponent() {
           )}
         </div>
       ) : (
-        <div className="flex justify-start items-center gap-4">
-          <span>Loading Content</span>
+        <div className="flex justify-center w-full items-center gap-4">
+          <span>Loading</span>
           <div className="lds-ripple">
             <div></div>
             <div></div>

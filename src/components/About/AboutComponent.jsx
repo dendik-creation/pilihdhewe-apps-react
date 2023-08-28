@@ -49,7 +49,7 @@ export default function AboutComponent() {
           >
             <img
               src="./pilihdhewe-icons-dark.svg"
-              className="animate-icon"
+              className="animate-icon w-4/5 md:w-full"
               alt=""
             />
             <div className="font-medium text-xl text-gray-600">
