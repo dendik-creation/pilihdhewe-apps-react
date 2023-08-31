@@ -229,7 +229,9 @@ export default function AboutComponent() {
                   </div>
                   <div className="flex justify-center text-gray-600 items-center gap-3">
                     <i className="bi bi-tools"></i>
-                    <span className="text-sm">Laravel 9 & React JS 18.2.0</span>
+                    <span className="text-sm">
+                      Laravel 9 & React {"(Vite)"} 18.2.0
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-start">

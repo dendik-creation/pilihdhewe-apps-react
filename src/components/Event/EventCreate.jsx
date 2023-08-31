@@ -329,7 +329,6 @@ export const EventCreate = () => {
                               name="visi"
                               rows={2}
                               id="visi"
-                              placeholder="Tekan enter untuk banyak visi & akhiri kalimat dengan titik"
                               className="text-sm px-1.5 py-1 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
                               value={candidate.visi}
                               onChange={(e) => handleChange(e, index)}

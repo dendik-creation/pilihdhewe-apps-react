@@ -230,13 +230,13 @@ export default function EventComponent() {
                             </p>
                             <p className="inline-flex flex-col xl:flex-row xl:items-center text-gray-800">
                               <i className="bi bi-calendar2-event"></i>
-                              <span className="mt-2 xl:ms-3 xl:mt-0">
+                              <span className="mt-2 xl:ms-3 xl:mt-0 line-clamp-1">
                                 {item.start_date}
                               </span>
                             </p>
                             <p className="inline-flex flex-col xl:flex-row xl:items-center text-gray-800">
                               <i className="bi bi-calendar2-check"></i>
-                              <span className="mt-2 xl:ms-3 xl:mt-0">
+                              <span className="mt-2 xl:ms-3 xl:mt-0 line-clamp-1">
                                 {item.end_date}
                               </span>
                             </p>
