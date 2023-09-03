@@ -187,31 +187,49 @@ export default class SiswaComponent extends Component {
             value="${response.data.name}"
         />
         </div>
-        <div class="flex flex-col">
-        <label class=" text-start mb-2">Kelas</label>
-        <select
-        name="kelas"
-        id="kelas"
-        class="px-4 py-2 bg-slate-50 rounded-md focus:outline-none focus:bg-slate-200 focus:transition-colors"
-      >
-        ${this.generateKelasList(this.state.kelas, response.data.kelas.id)}
 
-      </select>
-        </div>
         <div class="flex flex-col">
-        <label class=" text-start mb-2">Gender</label>
-        <select
-        name="gender"
-        id="gender"
-        class="px-4 py-2 bg-slate-50 rounded-md focus:outline-none focus:bg-slate-200 focus:transition-colors"
-      >
-        <option value="Laki-laki" ${
-          response.data.gender == "Laki-laki" ? "selected" : ""
-        }>Laki-laki</option>
-        <option value="Perempuan" ${
-          response.data.gender == "Perempuan" ? "selected" : ""
-        }>Perempuan</option>
-      </select>
+          <label class=" text-start mb-2">Kelas</label>
+          <select
+          name="kelas"
+          id="kelas"
+          class="px-4 py-2 bg-slate-50 rounded-md focus:outline-none focus:bg-slate-200 focus:transition-colors"
+        >
+          ${this.generateKelasList(this.state.kelas, response.data.kelas.id)}
+
+        </select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class=" text-start mb-2">Gender</label>
+          <select
+          name="gender"
+          id="gender"
+          class="px-4 py-2 bg-slate-50 rounded-md focus:outline-none focus:bg-slate-200 focus:transition-colors"
+        >
+          <option value="Laki-laki" ${
+            response.data.gender == "Laki-laki" ? "selected" : ""
+          }>Laki-laki</option>
+          <option value="Perempuan" ${
+            response.data.gender == "Perempuan" ? "selected" : ""
+          }>Perempuan</option>
+        </select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class=" text-start mb-2">Status Kandidat</label>
+          <select
+          name="ready_candidate"
+          id="ready_candidate"
+          class="px-4 py-2 bg-slate-50 rounded-md focus:outline-none focus:bg-slate-200 focus:transition-colors"
+        >
+          <option value="yes" ${
+            response.data.ready_candidate == "yes" ? "selected" : ""
+          }>Aktif</option>
+          <option value="no" ${
+            response.data.ready_candidate == "no" ? "selected" : ""
+          }>Nonaktif</option>
+        </select>
         </div>
       </div>
         `,
@@ -223,10 +241,13 @@ export default class SiswaComponent extends Component {
             const name = Swal.getPopup().querySelector("#name").value;
             const gender = Swal.getPopup().querySelector("#gender").value;
             const kelas = Swal.getPopup().querySelector("#kelas").value;
+            const ready_candidate =
+              Swal.getPopup().querySelector("#ready_candidate").value;
             if (
               name == response.data.name &&
               gender == response.data.gender &&
-              kelas == response.data.kelas_id
+              kelas == response.data.kelas_id &&
+              ready_candidate == response.data.ready_candidate
             ) {
               Swal.showValidationMessage(`Ubah setidaknya 1 data siswa`);
             }
@@ -235,6 +256,7 @@ export default class SiswaComponent extends Component {
                 name: name,
                 gender: gender,
                 kelas_id: kelas,
+                ready_candidate: ready_candidate,
               },
             };
           },

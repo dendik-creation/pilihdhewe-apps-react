@@ -94,7 +94,7 @@ export const httpUpdatePut = async (form, navigate, id) => {
 };
 
 export const httpGetCandidate = async () => {
-  const candidates = await axios.get(`${APP_URL}/siswa-all`, {
+  const candidates = await axios.get(`${APP_URL}/candidates`, {
     headers: {
       Authorization: `Bearer ${ACTIVE_USER.token}`,
     },

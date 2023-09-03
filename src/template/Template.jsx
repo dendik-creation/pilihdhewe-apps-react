@@ -91,7 +91,6 @@ export default function Template() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, Logout!",
-      showLoaderOnConfirm: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
     }).then((result) => {

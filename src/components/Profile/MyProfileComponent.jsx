@@ -24,6 +24,7 @@ export default function MyProfileComponent(props) {
     number_card: "",
     gender: "",
     kelas: "",
+    ready_candidate: "",
   });
   const [data, setData] = useState({
     id: "",
@@ -31,6 +32,7 @@ export default function MyProfileComponent(props) {
     number_card: "",
     gender: "",
     kelas: "",
+    ready_candidate: "",
   });
 
   const [show, setShow] = useState(false);
@@ -56,6 +58,7 @@ export default function MyProfileComponent(props) {
           number_card: response.number_card,
           gender: response.gender,
           gambar: response.gambar,
+          ready_candidate: response.ready_candidate,
           kelas: response.role == "admin" ? null : response.kelas,
         });
 
@@ -66,6 +69,7 @@ export default function MyProfileComponent(props) {
           name: response.name,
           number_card: response.number_card,
           gender: response.gender,
+          ready_candidate: response.ready_candidate,
           kelas: response.role == "admin" ? null : response.kelas.id,
         });
       })
@@ -189,17 +193,35 @@ export default function MyProfileComponent(props) {
                   <span className="font-medium">{initData.number_card}</span>
                 </div>
                 {initData.kelas == null ? (
-                  <div className="flex text-md justify-center md:justify-start gap-3">
+                  <div className="flex text-md justify-center md:justify-start gap-3 mb-1">
                     <i className="bi bi-person-workspace text-slate-400"></i>
                     <span className="font-medium">
                       {ACTIVE_USER.user.role == "admin" ? "Admin Level" : ""}
                     </span>
                   </div>
                 ) : (
-                  <div className="flex text-md justify-center md:justify-start gap-3">
+                  <div className="flex text-md justify-center md:justify-start gap-3 mb-1">
                     <i className="bi bi-person-workspace text-slate-400"></i>
                     <span className="font-medium">{initData.kelas.name}</span>
                   </div>
+                )}
+                {ACTIVE_USER.user.role == "siswa" ? (
+                  <div className="flex text-md justify-center md:justify-start gap-3 mb-1">
+                    <i
+                      className={`bi bi-person-${
+                        initData.ready_candidate == "yes" ? "check" : "x"
+                      } text-slate-400`}
+                    ></i>
+                    <span className="font-medium">
+                      {initData.ready_candidate == "yes"
+                        ? "Kandidat Aktif"
+                        : initData.ready_candidate == "no"
+                        ? "Tidak Menjadi Kandidat"
+                        : ""}
+                    </span>
+                  </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>
@@ -224,22 +246,6 @@ export default function MyProfileComponent(props) {
                     />
                   </div>
 
-                  <div className="mb-5 flex flex-col">
-                    <label htmlFor="number_card" className="mb-1">
-                      Number Card - <span className="text-sm">Read Only</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="number_card"
-                      id="number_card"
-                      value={data.number_card}
-                      onChange={(e) => handleChange(e)}
-                      disabled
-                      className="text-sm px-2 w-full py-1.5 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col flex-grow">
                   {ACTIVE_USER.user.role == "siswa" ? (
                     <div className="mb-5 flex flex-col">
                       <label htmlFor="kelas" className="mb-1">
@@ -258,12 +264,13 @@ export default function MyProfileComponent(props) {
                   ) : (
                     ""
                   )}
+                </div>
+                <div className="flex flex-col flex-grow">
                   <div className="mb-5 flex flex-col">
                     <label htmlFor="gender" className="mb-1">
                       Gender
                     </label>
                     <select
-                      type="text"
                       name="gender"
                       id="gender"
                       value={data.gender}
@@ -286,15 +293,18 @@ export default function MyProfileComponent(props) {
               <button
                 type="submit"
                 disabled={!btnSubmit || isLoadingUpdate}
-                className={`w-full flex justify-center items-center gap-4 bg-blue-200 px-2 py-1 rounded-md transition-all ${
-                  !btnSubmit
-                    ? "opacity-30"
-                    : isLoadingUpdate
-                    ? "bg-teal-200"
-                    : ""
-                } disabled:hover:bg-blue-200 disabled:hover:text-black disabled:cursor-not-allowed ${
-                  btnSubmit ? "hover:bg-gray-800" : ""
-                } hover:transition-all hover:text-white`}
+                className={`w-full flex justify-center
+                    items-center gap-4 bg-blue-200 px-2 py-1 rounded-md transition-all ${
+                      !btnSubmit
+                        ? "opacity-30"
+                        : isLoadingUpdate
+                        ? "bg-teal-200"
+                        : ""
+                    } disabled:hover:bg-blue-200 disabled:hover:text-black
+                    disabled:cursor-not-allowed ${
+                      btnSubmit ? "hover:bg-gray-800" : ""
+                    } hover:transition-all
+                    hover:text-white`}
               >
                 <span>{isLoadingUpdate ? "Updating" : "Update"}</span>
                 {isLoadingUpdate ? (
@@ -334,9 +344,9 @@ export default function MyProfileComponent(props) {
       >
         <XCircleIcon
           id="close-btn"
-          className={`w-10 text-white bg-slate-700 md:bg-transparent md:text-slate-700 md:hover:bg-slate-700 md:hover:text-white transition-all hover:transition-all cursor-pointer rounded-full h-10 top-4 absolute right-4 z-10 ${
-            isLoading ? "opacity-30" : ""
-          }`}
+          className={`w-10 text-white bg-slate-700 md:bg-transparent md:text-slate-700
+            md:hover:bg-slate-700 md:hover:text-white transition-all hover:transition-all cursor-pointer rounded-full
+            h-10 top-4 absolute right-4 z-10 ${isLoading ? "opacity-30" : ""}`}
           onClick={() => {
             if (!isLoading) {
               selectImage.selected = "";
@@ -347,11 +357,13 @@ export default function MyProfileComponent(props) {
         />
         <form onSubmit={(e) => readySubmitImage(e)}>
           <div
-            className={`flex flex-col px-6 py-3 md:px-20 md:py-10 lg:px-32 lg:py-16 group rounded-lg border-4 border-dashed transition-all hover:border-emerald-400 hover:bg-emerald-100 hover:transition-all border-slate-300 relative justify-center items-center mb-7 ${
-              isLoading
-                ? "hover:border-slate-300 hover:bg-transparent"
-                : "opacity-100"
-            }`}
+            className={`flex flex-col px-6 py-3 md:px-20 md:py-10 lg:px-32 lg:py-16 group rounded-lg border-4
+                    border-dashed transition-all hover:border-emerald-400 hover:bg-emerald-100 hover:transition-all
+                    border-slate-300 relative justify-center items-center mb-7 ${
+                      isLoading
+                        ? "hover:border-slate-300 hover:bg-transparent"
+                        : "opacity-100"
+                    }`}
           >
             <Transition
               show={isLoading}
@@ -381,7 +393,8 @@ export default function MyProfileComponent(props) {
               </span>
               {selectImage.selected.name ? (
                 <div
-                  className={`text-slate-500 flex justify-start items-center absolute bottom-0.5 md:bottom-5 lg:bottom-8 gap-2`}
+                  className={`text-slate-500 flex justify-start items-center absolute bottom-0.5 md:bottom-5
+                            lg:bottom-8 gap-2`}
                 >
                   <i className="bi bi-card-image text-lg"></i>
                   <span className="text-sm">

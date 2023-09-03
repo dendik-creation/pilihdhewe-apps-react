@@ -156,7 +156,6 @@ export const EventEdit = () => {
 
   const beforeSubmit = (e) => {
     e.preventDefault();
-    console.log(candidateReadyDelete);
     if (isRangeDate(formData.start_date, formData.end_date, isUpdate)) {
       if (isCandidateUnique(candidate)) {
         if (checkBtn) {
