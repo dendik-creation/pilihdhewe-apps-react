@@ -13,6 +13,7 @@ import {
 import { KeyIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
 import { Menu, Transition } from "@headlessui/react";
+import { Ripples } from "@uiball/loaders";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -854,12 +855,8 @@ export default class SiswaComponent extends Component {
             </div>
           </div>
         ) : this.state.isRequest ? (
-          <div className="flex justify-center w-full items-center gap-4">
-            <span>Loading</span>
-            <div className="lds-ripple">
-              <div></div>
-              <div></div>
-            </div>
+          <div className="flex justify-center w-full h-96 items-center gap-4">
+            <Ripples speed={1.7} size={150} color="rgba(31,41,55,0.5)" />
           </div>
         ) : this.state.siswa.length == 0 ? (
           <Transition

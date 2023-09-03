@@ -14,6 +14,7 @@ import { Transition } from "@headlessui/react";
 import { ACTIVE_USER, APP_URL } from "../../utils/constant";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Ripples } from "@uiball/loaders";
 
 export default function EventComponent() {
   const [events, setEvents] = useState([]);
@@ -313,12 +314,8 @@ export default function EventComponent() {
           )}
         </div>
       ) : isRequest ? (
-        <div className="flex justify-center w-full items-center gap-4">
-          <span>Loading</span>
-          <div className="lds-ripple">
-            <div></div>
-            <div></div>
-          </div>
+        <div className="flex justify-center w-full h-96 items-center gap-4">
+          <Ripples speed={1.7} size={150} color="rgba(31,41,55,0.5)" />
         </div>
       ) : (
         <Transition

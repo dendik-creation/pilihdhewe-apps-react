@@ -89,11 +89,11 @@ export const EventCreate = () => {
   };
 
   const removeCandidate = (index) => {
+    const values = [...candidate];
     setTransitionCandidate(false);
     setTimeout(() => {
       setTransitionCandidate(true);
     }, 500);
-    const values = [...candidate];
     values.splice(index, 1);
     setCandidate(values);
   };

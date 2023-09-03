@@ -5,6 +5,7 @@ import { RadioGroup, Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { ACTIVE_USER, PUBLIC_URL } from "../../utils/constant";
 import Swal from "sweetalert2";
+import { Ripples } from "@uiball/loaders";
 
 export default function EventDetailComponent() {
   let { id } = useParams();
@@ -553,12 +554,8 @@ export default function EventDetailComponent() {
               )}
             </div>
           ) : (
-            <div className="flex justify-center w-full items-center gap-4">
-              <span>Loading</span>
-              <div className="lds-ripple">
-                <div></div>
-                <div></div>
-              </div>
+            <div className="flex justify-center w-full h-96 items-center gap-4">
+              <Ripples speed={1.7} size={150} color="rgba(31,41,55,0.5)" />
             </div>
           )}
         </div>

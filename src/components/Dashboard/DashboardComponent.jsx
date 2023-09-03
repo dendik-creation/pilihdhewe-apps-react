@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 import { LinkIcon } from "@heroicons/react/24/outline";
+import { Ripples } from "@uiball/loaders";
 
 export default class DashboardComponent extends Component {
   constructor(props) {
@@ -132,12 +133,8 @@ export default class DashboardComponent extends Component {
             </Transition>
           </div>
         ) : this.state.isRequest ? (
-          <div className="flex justify-center w-full items-center gap-4">
-            <span>Loading</span>
-            <div className="lds-ripple">
-              <div></div>
-              <div></div>
-            </div>
+          <div className="flex justify-center w-full h-96 items-center gap-4">
+            <Ripples speed={1.7} size={150} color="rgba(31,41,55,0.5)" />
           </div>
         ) : (
           "Mulailah Berinteraksi Dengan Pilih Dhewe Apps"
