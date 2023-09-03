@@ -57,7 +57,7 @@ export default function EventDetailComponent() {
         title: "Missing Event",
         text: "Event yang dimaksud tidak ada",
       });
-    } else if (event.status == "Inactive") {
+    } else if (event.status == "Inactive" && ACTIVE_USER.user.role == "siswa") {
       navigate("/events");
       Swal.fire({
         icon: "warning",
@@ -244,7 +244,13 @@ export default function EventDetailComponent() {
                                             }`}
                                           >
                                             <i className="bi bi-person me-2"></i>
-                                            <span>{candidate.user.name}</span>
+                                            <span>
+                                              {candidate.user.id ==
+                                              ACTIVE_USER.user.id
+                                                ? candidate.user.name +
+                                                  " (Anda)"
+                                                : candidate.user.name}
+                                            </span>
                                           </RadioGroup.Label>
                                           <RadioGroup.Description
                                             as="span"
@@ -373,7 +379,11 @@ export default function EventDetailComponent() {
                                 <div className="block ms-36">
                                   <div className="flex justify-start text-lg font-semibold text-gray-900 mb-2">
                                     <i className="bi bi-person me-2"></i>
-                                    <span>{meVote.user.name}</span>
+                                    <span>
+                                      {meVote.user.id == ACTIVE_USER.user.id
+                                        ? meVote.user.name + " (Anda)"
+                                        : meVote.user.name}
+                                    </span>
                                   </div>
                                   <div className="flex justify-start text-sm text-gray-500 mb-1">
                                     <i className="bi bi-bookmark-check me-2 text-md"></i>

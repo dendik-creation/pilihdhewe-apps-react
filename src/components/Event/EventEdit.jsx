@@ -34,6 +34,7 @@ export const EventEdit = () => {
   const [transition, setTransition] = useState(false);
   const [transitionCandidate, setTransitionCandidate] = useState(true);
   const [candidateState, setCandidateState] = useState(false);
+  const [candidateReadyDelete, setCandidateReadyDelete] = useState([]);
 
   // on Updating State
   const [isUpdating, setUpdating] = useState(false);
@@ -136,28 +137,26 @@ export const EventEdit = () => {
 
   const removeCandidate = (index, user_id, event_id, status) => {
     if (status == "then") {
-      const values = [...candidate];
-      httpDeleteCandidate(
-        user_id,
-        event_id,
-        values,
-        index,
-        setCandidate,
-        setTransitionCandidate
-      );
-    } else if (status == "new") {
-      setTransitionCandidate(false);
-      setTimeout(() => {
-        setTransitionCandidate(true);
-      }, 500);
-      const values = [...candidate];
-      values.splice(index, 1);
-      setCandidate(values);
+      setCandidateReadyDelete([
+        ...candidateReadyDelete,
+        {
+          user_id: user_id,
+          event_id: event_id,
+        },
+      ]);
     }
+    setTransitionCandidate(false);
+    setTimeout(() => {
+      setTransitionCandidate(true);
+    }, 500);
+    const values = [...candidate];
+    values.splice(index, 1);
+    setCandidate(values);
   };
 
   const beforeSubmit = (e) => {
     e.preventDefault();
+    console.log(candidateReadyDelete);
     if (isRangeDate(formData.start_date, formData.end_date, isUpdate)) {
       if (isCandidateUnique(candidate)) {
         if (checkBtn) {
@@ -182,9 +181,15 @@ export const EventEdit = () => {
           }).then((result) => {
             if (result.isConfirmed) {
               setUpdating(true);
-              candidateUpdate.map((item) => {
-                httpUpdateCandidate(item);
-              });
+              if (candidateReadyDelete.length > 0) {
+                candidateReadyDelete.map((item) => {
+                  httpDeleteCandidate(item.user_id, item.event_id);
+                });
+              }
+              if (candidateUpdate.length > 0)
+                candidateUpdate.map((item) => {
+                  httpUpdateCandidate(item);
+                });
               if (candidateNew.length > 0) {
                 httpCreateCandidate(candidateNew);
               }
@@ -409,8 +414,10 @@ export const EventEdit = () => {
                                 options={candidateList}
                                 name="user_id"
                                 id="user_id"
-                                defaultValue={_item}
                                 value={candidate.user_id}
+                                defaultValue={
+                                  _item.status == "then" ? _item : null
+                                }
                                 onChange={(e) => handleChange(e, index)}
                                 components={{ Option: CustomCandidateOption }}
                                 noOptionsMessage={() =>

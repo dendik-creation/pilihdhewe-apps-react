@@ -17,13 +17,16 @@ import axios from "axios";
 
 export default function EventComponent() {
   const [events, setEvents] = useState([]);
+  const [isRequest, setRequest] = useState(false);
   const [votes, setVotes] = useState([]);
   const [search, setSearch] = useState("");
   const [transition, setTransition] = useState(false);
   useEffect(() => {
+    setRequest(true);
     httpGetIndex().then((response) => {
       setEvents(response);
       setTimeout(() => {
+        setRequest(false);
         setTransition(true);
       }, 250);
     });
@@ -98,7 +101,7 @@ export default function EventComponent() {
             leaveFrom="opacity-100 rotate-0 scale-100 "
             leaveTo="opacity-0 scale-95"
           >
-            <div className="relative flex mb-6 mx-8 lg:mx-2 justify-start gap-8 items-center">
+            <div className="relative flex mb-6 mx-8 lg:mx-2 justify-between items-center">
               <input
                 className="group ps-8 py-2 w-60 border-b-2 border-red-100 transition-all outline-none  focus:outline-none focus:border-gray-800 focus:transition-all"
                 type="search"
@@ -160,7 +163,7 @@ export default function EventComponent() {
                             }
                           >
                             <span className="absolute top-0 left-0 inline-flex m-3 px-3 py-2 rounded-lg z-10 shadow-inner bg-slate-50 text-sm font-medium text-slate-700 select-none">
-                              #{i + 1}
+                              #{i}
                             </span>
                             {ACTIVE_USER.user.role == "admin" ? (
                               <NavLink
@@ -196,8 +199,11 @@ export default function EventComponent() {
                               >
                                 {vote.user_id == ACTIVE_USER.user.id &&
                                 item.id == vote.event_id ? (
-                                  <div className="transition-all bg-slate-50 px-2 py-1 rounded-md shadow-inner">
-                                    Anda Telah Voting
+                                  <div
+                                    title="Anda Telah Voting"
+                                    className="transition-all bg-slate-50 px-2 py-1 rounded-md shadow-inner"
+                                  >
+                                    <i className="bi bi-check2-circle"></i>
                                   </div>
                                 ) : (
                                   ""
@@ -306,7 +312,7 @@ export default function EventComponent() {
             </div>
           )}
         </div>
-      ) : (
+      ) : isRequest ? (
         <div className="flex justify-center w-full items-center gap-4">
           <span>Loading</span>
           <div className="lds-ripple">
@@ -314,6 +320,33 @@ export default function EventComponent() {
             <div></div>
           </div>
         </div>
+      ) : (
+        <Transition
+          show={transition}
+          enter="transform transition duration-[400ms]"
+          enterFrom="opacity-0 translate-y-12"
+          enterTo="opacity-100 translate-y-0"
+          leave="transform duration-200 transition ease-in-out"
+          leaveFrom="opacity-100 rotate-0 scale-100 "
+          leaveTo="opacity-0 scale-95"
+        >
+          <div className="relative flex-col md:flex-row flex mb-6 mx-8 lg:mx-2 justify-start gap-4 md:gap-8 items-center">
+            <div className="flex">Tidak Ada Event Tersedia</div>
+            {ACTIVE_USER.user.role == "admin" ? (
+              <NavLink
+                to={"create"}
+                className="bg-gray-300 px-2 py-1.5 md:px-4 md:py-2 flex justify-center items-center relative rounded-md group hover:bg-gray-800 hover:transition-all"
+              >
+                <CalendarDaysIcon className="w-5 h-5 me-2 text-gray-800 relative group-hover:text-white group-hover:transition-all" />
+                <span className="text-sm group-hover:text-white">
+                  Event Baru
+                </span>
+              </NavLink>
+            ) : (
+              ""
+            )}
+          </div>{" "}
+        </Transition>
       )}
     </>
   );

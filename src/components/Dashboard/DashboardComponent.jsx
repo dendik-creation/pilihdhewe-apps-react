@@ -13,6 +13,7 @@ export default class DashboardComponent extends Component {
     this.state = {
       dashboard: [],
       transition: false,
+      isRequest: false,
     };
   }
   componentDidMount() {
@@ -20,6 +21,7 @@ export default class DashboardComponent extends Component {
   }
 
   getDashboard() {
+    this.setState({ isRequest: true });
     axios
       .get(`${APP_URL}/dashboard`, {
         headers: {
@@ -30,6 +32,7 @@ export default class DashboardComponent extends Component {
         let dashboard = result.data;
         this.setState({ dashboard: dashboard });
         setTimeout(() => {
+          this.setState({ isRequest: false });
           this.setState({ transition: true });
         }, 350);
       })
@@ -128,7 +131,7 @@ export default class DashboardComponent extends Component {
               </div>
             </Transition>
           </div>
-        ) : (
+        ) : this.state.isRequest ? (
           <div className="flex justify-center w-full items-center gap-4">
             <span>Loading</span>
             <div className="lds-ripple">
@@ -136,6 +139,8 @@ export default class DashboardComponent extends Component {
               <div></div>
             </div>
           </div>
+        ) : (
+          "Mulailah Berinteraksi Dengan Pilih Dhewe Apps"
         )}
       </>
     );

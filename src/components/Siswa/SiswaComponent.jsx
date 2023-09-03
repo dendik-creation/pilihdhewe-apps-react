@@ -7,6 +7,8 @@ import {
   QueueListIcon,
   UserPlusIcon,
   MagnifyingGlassIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
 } from "@heroicons/react/24/outline";
 import { KeyIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
@@ -24,7 +26,13 @@ export default class SiswaComponent extends Component {
       siswa: [],
       kelas: [],
       transition: false,
-      searchName: "",
+      search: "",
+      isRequest: false,
+      pagination: {
+        current: null,
+        total: null,
+      },
+      isSearching: false,
     };
   }
   componentDidMount() {
@@ -32,19 +40,28 @@ export default class SiswaComponent extends Component {
     this.getListKelas();
   }
 
-  getSiswa() {
+  getSiswa(page) {
+    this.setState({ isRequest: true, isSearching: false });
     axios
       .get(`${APP_URL}/siswa-all`, {
         headers: {
           Authorization: `Bearer ${ACTIVE_USER.token}`,
         },
+        params: { search: this.state.search, page: page },
       })
       .then((response) => {
-        let siswa = response.data;
+        let siswa = response.data.data;
         this.setState({ siswa });
+        this.setState({
+          pagination: {
+            current: response.data.current_page,
+            total: response.data.last_page,
+          },
+        });
         setTimeout(() => {
+          this.setState({ isRequest: false });
           this.setState({ transition: true });
-        }, 250);
+        }, 500);
       })
       .catch((err) => {
         console.log(err);
@@ -240,7 +257,6 @@ export default class SiswaComponent extends Component {
   }
 
   generateKelasList(kelas, myClassID) {
-    // const isMyClass = kelas.filter(item => item.id != kelas )
     const options = kelas.map(
       (item) =>
         `<option value="${item.id}" ${item.id == myClassID ? "selected" : ""}>${
@@ -308,11 +324,9 @@ export default class SiswaComponent extends Component {
           .then((response) => {
             this.successResponse(response);
             this.setState((prevState) => {
-              let filterSiswa = prevState.siswa.filter(
-                (item) => item.id !== id
-              );
+              let siswa = prevState.siswa.filter((item) => item.id !== id);
               return {
-                siswa: filterSiswa,
+                siswa: siswa,
               };
             });
           })
@@ -363,14 +377,11 @@ export default class SiswaComponent extends Component {
 
   serachHandle(e) {
     this.setState({
-      searchName: e.target.value,
+      search: e.target.value,
     });
   }
 
   render() {
-    const filterSiswa = this.state.siswa.filter((item) =>
-      item.name.toLowerCase().includes(this.state.searchName.toLowerCase())
-    );
     let { siswa } = this.state;
     return (
       <>
@@ -388,49 +399,52 @@ export default class SiswaComponent extends Component {
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
                   >
-                    <div className=" relative flex mb-4 justify-start gap-8 items-center mx-5 md:mx-0">
-                      {siswa.length > 0 ? (
-                        <div className="relative flex justify-start gap-8 items-center">
-                          <input
-                            className="group ps-8 py-2 w-60 border-b-2 border-red-100 transition-all outline-none  focus:outline-none focus:border-gray-800 focus:transition-all"
-                            type="search"
-                            value={this.state.searchName}
-                            onChange={(e) => this.serachHandle(e)}
-                            placeholder="Cari Berdasarkan Nama"
-                          />
-                          <MagnifyingGlassIcon className="w-5 h-5 absolute text-slate-500" />
-                        </div>
-                      ) : (
-                        <span className="text-sm">Tambah Data Siswa</span>
-                      )}
+                    <div className="relative flex md:flex-row flex-col mb-4 justify-between gap-8 items-center mx-5 md:mx-0">
+                      <form
+                        className="flex justify-center gap-4 items-center"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          this.setState({ isSearching: true });
+                          setTimeout(() => {
+                            this.getSiswa();
+                          }, 1000);
+                        }}
+                      >
+                        <input
+                          className="group px-2 py-2 w-60 border-b-2 border-red-100 transition-all outline-none  focus:outline-none focus:border-gray-800 focus:transition-all"
+                          type="text"
+                          value={this.state.search}
+                          onChange={(e) => this.serachHandle(e)}
+                          placeholder="Cari Berdasarkan Nama"
+                        />
+                        <button
+                          type="submit"
+                          className="bg-gray-300 px-4 py-2 rounded-md group hover:bg-gray-800 hover:transition-all"
+                        >
+                          <MagnifyingGlassIcon className="w-5 h-5 text-gray-800 group-hover:text-white group-hover:transition-all" />
+                        </button>
+                      </form>
                       <button
-                        className="bg-gray-300 px-4 py-2 rounded-md group hover:bg-gray-800 hover:transition-all"
+                        className="bg-gray-300 flex justify-center items-center gap-3 px-4 py-2 rounded-md group hover:bg-gray-800 hover:transition-all"
                         onClick={() => this.createSiswa()}
                       >
                         <UserPlusIcon className="w-5 h-5 text-gray-800 group-hover:text-white group-hover:transition-all" />
+                        <span className="block md:hidden text-sm group-hover:text-white">
+                          Siswa Baru
+                        </span>
                       </button>
                     </div>
                   </Transition>
-                  {filterSiswa.length >= 1 ? (
+                  {siswa.length >= 1 ? (
                     <div className="block">
-                      {this.state.searchName !== "" ? (
-                        <div className="flex flex-start my-2 mx-5 md:mx-0">
-                          <QueueListIcon className="w-6 h-6 me-2" />
-                          <div className="text-slate-600">
-                            {filterSiswa.length} Siswa
-                          </div>
-                        </div>
-                      ) : (
-                        ""
-                      )}
                       <Transition
-                        show={this.state.transition}
-                        enter="transform transition duration-[500ms]"
-                        enterFrom="opacity-0 -translate-y-12"
+                        show={this.state.transition && !this.state.isSearching}
+                        enter="transform transition duration-[500ms] delay-500"
+                        enterFrom="opacity-0 translate-y-12"
                         enterTo="opacity-100 translate-y-0"
                         leave="transform duration-200 transition ease-in-out"
-                        leaveFrom="opacity-100 rotate-0 scale-100 "
-                        leaveTo="opacity-0 scale-95"
+                        leaveFrom="opacity-100 translate-y-0"
+                        leaveTo="opacity-0 translate-y-12"
                         className="hidden lg:block"
                       >
                         <table className="min-w-full text-left text-sm font-light">
@@ -460,7 +474,7 @@ export default class SiswaComponent extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {filterSiswa.map((item, i) => (
+                            {siswa.map((item, i) => (
                               <tr
                                 key={item.id}
                                 className="border-b hover:bg-yellow-100 odd:bg-gray-100 even:bg-white transition-all"
@@ -528,20 +542,25 @@ export default class SiswaComponent extends Component {
                           </tbody>
                         </table>
                       </Transition>
-                      <div className="flex flex-col lg:hidden mx-4 mt-12">
-                        <ul className="flex flex-col gap-8">
-                          {filterSiswa.map((item, i) => (
+
+                      {/* Mobile */}
+                      <div className="flex flex-col lg:hidden mx-4 mt-12 mb-8">
+                        <ul className="grid md:grid-cols-2 grid-cols-1 gap-8">
+                          {siswa.map((item, i) => (
                             <li key={i} className="">
                               <Transition
-                                show={this.state.transition}
+                                show={
+                                  this.state.transition &&
+                                  !this.state.isSearching
+                                }
                                 enter={`transform transition duration-300 delay-[${
-                                  i++ * 100
+                                  i++ * 100 + 300
                                 }ms]`}
                                 enterFrom="transform opacity-0 scale-110"
                                 enterTo="transform opacity-100 scale-100"
                                 leave="transition ease-in duration-75"
                                 leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-110"
+                                leaveTo="transform opacity-0 scale-90"
                                 className="flex flex-col shadow-md rounded-md px-3 py-1.5 overflow-hidden relative"
                               >
                                 <div className="absolute -top-2 -right-2 px-2.5 py-1.5 rounded-md bg-emerald-200">
@@ -574,7 +593,9 @@ export default class SiswaComponent extends Component {
                                                   this.editSiswa(item.id)
                                                 }
                                                 className={classNames(
-                                                  active ? "bg-gray-100" : "",
+                                                  active
+                                                    ? "hover:bg-gray-100"
+                                                    : "",
                                                   "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
                                                 )}
                                               >
@@ -589,7 +610,9 @@ export default class SiswaComponent extends Component {
                                               >
                                                 <button
                                                   className={classNames(
-                                                    active ? "bg-gray-100" : "",
+                                                    active
+                                                      ? "hover:bg-gray-100"
+                                                      : "",
                                                     "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
                                                   )}
                                                 >
@@ -606,7 +629,9 @@ export default class SiswaComponent extends Component {
                                               >
                                                 <button
                                                   className={classNames(
-                                                    active ? "bg-gray-100" : "",
+                                                    active
+                                                      ? "hover:bg-gray-100"
+                                                      : "",
                                                     "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
                                                   )}
                                                 >
@@ -642,7 +667,9 @@ export default class SiswaComponent extends Component {
                                   <div className="flex flex-col gap-2">
                                     <div className="flex justify-start text-slate-600 gap-2">
                                       <i className="bi bi-person"></i>
-                                      <span className="">{item.name}</span>
+                                      <span className="line-clamp-1">
+                                        {item.name}
+                                      </span>
                                     </div>
                                     <div className="flex justify-start text-slate-600 gap-2">
                                       <i className="bi bi-person-vcard"></i>
@@ -675,15 +702,71 @@ export default class SiswaComponent extends Component {
                           ))}
                         </ul>
                       </div>
-                    </div>
-                  ) : siswa.length > 0 ? (
-                    <div className="block">
-                      <div className="flex flex-start my-2 mx-5 md:mx-0">
-                        <FaceFrownIcon className="w-6 h-6 me-2" />
-                        <div className="text-slate-600">
-                          Pencarian "{this.state.searchName}" tidak ditemukan
-                        </div>
-                      </div>
+
+                      {/* Pagination */}
+                      <Transition
+                        show={this.state.transition && !this.state.isSearching}
+                        enter="transform transition duration-300 delay-500"
+                        enterFrom="opacity-0 scale-90"
+                        enterTo="opacity-100 scale-100"
+                        leave="transform duration-200 transition ease-in-out"
+                        leaveFrom="opacity-100 rotate-0 scale-100 "
+                        leaveTo="opacity-0 scale-90"
+                        className="w-full flex justify-center items-center mt-8"
+                      >
+                        <nav
+                          className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                          aria-label="Pagination"
+                        >
+                          <button
+                            onClick={() => {
+                              this.getSiswa(this.state.pagination.current - 1);
+                            }}
+                            disabled={this.state.pagination.current == 1}
+                            className="relative inline-flex items-center disabled:cursor-not-allowed rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                          >
+                            <span className="sr-only">Previous</span>
+                            <ChevronLeftIcon className="w-4 h-4" />
+                          </button>
+                          {Array.from(
+                            { length: this.state.pagination.total },
+                            (_, indexPage) => (
+                              <button
+                                key={indexPage}
+                                disabled={
+                                  this.state.pagination.current == indexPage + 1
+                                }
+                                aria-current={`${
+                                  this.state.pagination.current == indexPage + 1
+                                    ? "page"
+                                    : ""
+                                }`}
+                                className={`${
+                                  indexPage + 1 == this.state.pagination.current
+                                    ? "relative z-10 inline-flex items-center bg-indigo-600 disabled:cursor-not-allowed px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                    : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                }`}
+                                onClick={() => this.getSiswa(indexPage + 1)}
+                              >
+                                {indexPage + 1}
+                              </button>
+                            )
+                          )}
+                          <button
+                            disabled={
+                              this.state.pagination.total ==
+                              this.state.pagination.current
+                            }
+                            onClick={() =>
+                              this.getSiswa(this.state.pagination.current + 1)
+                            }
+                            className="relative inline-flex items-center rounded-r-md px-2 py-2 disabled:cursor-not-allowed text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                          >
+                            <span className="sr-only">Next</span>
+                            <ChevronRightIcon className="w-4 h-4" />
+                          </button>
+                        </nav>
+                      </Transition>
                     </div>
                   ) : (
                     ""
@@ -692,7 +775,63 @@ export default class SiswaComponent extends Component {
               </div>
             </div>
           </div>
-        ) : (
+        ) : this.state.search != "" ||
+          (this.state.siswa.length == 0 && !this.state.isRequest) ? (
+          <div className="flex flex-col overflow-x-auto">
+            <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+              <div className="overflow-x-auto">
+                <Transition
+                  show={this.state.transition}
+                  enter="transform transition duration-300 delay-300"
+                  enterFrom="opacity-0 -translate-y-12"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <div className="relative flex md:flex-row flex-col mb-4 justify-between gap-8 items-center mx-5 md:mx-0">
+                    <form
+                      className="flex justify-center gap-4 items-center"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        this.setState({ isSearching: true });
+                        setTimeout(() => {
+                          this.getSiswa();
+                        }, 1000);
+                      }}
+                    >
+                      <input
+                        className="group px-2 py-2 w-60 border-b-2 border-red-100 transition-all outline-none  focus:outline-none focus:border-gray-800 focus:transition-all"
+                        type="text"
+                        value={this.state.search}
+                        onChange={(e) => this.serachHandle(e)}
+                        placeholder="Cari Berdasarkan Nama"
+                      />
+                      <button
+                        type="submit"
+                        className="bg-gray-300 px-4 py-2 rounded-md group hover:bg-gray-800 hover:transition-all"
+                      >
+                        <MagnifyingGlassIcon className="w-5 h-5 text-gray-800 group-hover:text-white group-hover:transition-all" />
+                      </button>
+                    </form>
+                    <button
+                      className="bg-gray-300 flex justify-center items-center gap-3 px-4 py-2 rounded-md group hover:bg-gray-800 hover:transition-all"
+                      onClick={() => this.createSiswa()}
+                    >
+                      <UserPlusIcon className="w-5 h-5 text-gray-800 group-hover:text-white group-hover:transition-all" />
+                      <span className="block md:hidden text-sm group-hover:text-white">
+                        Siswa Baru
+                      </span>
+                    </button>
+                  </div>
+                  <div className="flex justify-center items-center md:justify-start md:items-start w-full">
+                    <span className="text-sm">Siswa tidak ditemukan</span>
+                  </div>
+                </Transition>
+              </div>
+            </div>
+          </div>
+        ) : this.state.isRequest ? (
           <div className="flex justify-center w-full items-center gap-4">
             <span>Loading</span>
             <div className="lds-ripple">
@@ -700,6 +839,31 @@ export default class SiswaComponent extends Component {
               <div></div>
             </div>
           </div>
+        ) : this.state.siswa.length == 0 ? (
+          <Transition
+            show={this.state.transition}
+            enter="transform transition duration-300 delay-300"
+            enterFrom="opacity-0 -translate-y-12"
+            enterTo="opacity-100 translate-y-0"
+            leave="transform duration-200 transition ease-in-out"
+            leaveFrom="opacity-100 rotate-0 scale-100"
+            leaveTo="opacity-0 scale-95 "
+          >
+            <div className="relative flex-col md:flex-row flex mb-6 mx-8 lg:mx-2 justify-start gap-4 md:gap-8 items-center">
+              <span className="text-sm">Tidak Ada Data Siswa</span>
+              <button
+                className="bg-gray-300 px-4 py-2 rounded-md group flex justify-start items-center hover:bg-gray-800 hover:transition-all"
+                onClick={() => this.createSiswa()}
+              >
+                <UserPlusIcon className="w-5 h-5 text-gray-800 me-3 group-hover:text-white group-hover:transition-all" />
+                <span className="text-sm group-hover:text-white">
+                  Siswa Baru
+                </span>
+              </button>
+            </div>
+          </Transition>
+        ) : (
+          ""
         )}
       </>
     );

@@ -13,7 +13,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import { Transition } from "@headlessui/react";
 import { bar } from "../../charts/bar";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 
 ChartJS.register(
   BarElement,
@@ -31,7 +32,9 @@ export default function LaporanComponent() {
   const [recent, setRecent] = useState(null);
   const [barChart, setBarChart] = useState(null);
   const [show, setShow] = useState(false);
+  const [isRequest, setRequest] = useState(false);
   useEffect(() => {
+    setRequest(true);
     httpGetIndex()
       .then((res) => {
         setBarChart(bar(res[0]));
@@ -40,6 +43,7 @@ export default function LaporanComponent() {
       })
       .then(() => {
         setTimeout(() => {
+          setRequest(false);
           setShow(true);
         }, 250);
       })
@@ -187,7 +191,7 @@ export default function LaporanComponent() {
             ))}
           </div>
         </div>
-      ) : (
+      ) : isRequest ? (
         <div className="flex justify-center w-full items-center gap-4">
           <span>Loading</span>
           <div className="lds-ripple">
@@ -195,6 +199,27 @@ export default function LaporanComponent() {
             <div></div>
           </div>
         </div>
+      ) : (
+        <Transition
+          show={show}
+          enter="transform transition duration-[400ms]"
+          enterFrom="opacity-0 translate-y-12"
+          enterTo="opacity-100 translate-y-0"
+          leave="transform duration-200 transition ease-in-out"
+          leaveFrom="opacity-100 rotate-0 scale-100 "
+          leaveTo="opacity-0 scale-95"
+        >
+          <div className="relative flex-col md:flex-row flex mb-6 mx-8 lg:mx-2 justify-start gap-4 md:gap-8 items-center">
+            <div className="flex">Buat Event Untuk Monitoring di Laporan</div>
+            <NavLink
+              to={"/events/create"}
+              className="bg-gray-300 px-2 py-1.5 md:px-4 md:py-2 flex justify-center items-center relative rounded-md group hover:bg-gray-800 hover:transition-all"
+            >
+              <CalendarDaysIcon className="w-5 h-5 me-2 text-gray-800 relative group-hover:text-white group-hover:transition-all" />
+              <span className="text-sm group-hover:text-white">Event Baru</span>
+            </NavLink>
+          </div>
+        </Transition>
       )}
     </>
   );

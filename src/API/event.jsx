@@ -123,40 +123,17 @@ export const httpUpdateCandidate = async (candidate) => {
   });
 };
 
-export const httpDeleteCandidate = async (
-  user_id,
-  event_id,
-  values,
-  index,
-  setCandidate,
-  setTransitionCandidate
-) => {
-  await Swal.fire({
-    title: "Hapus Kandidat ?",
-    text: "Menghapus data kandidat lama menyebabkan hasil voting yang di dapatkannya terhapus",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Ya, Hapus!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      axios
-        .delete(`${APP_URL}/candidates/${event_id}/${user_id}`, {
-          headers: {
-            Authorization: `Bearer ${ACTIVE_USER.token}`,
-          },
-        })
-        .then(() => {
-          setTransitionCandidate(false);
-          setTimeout(() => {
-            setTransitionCandidate(true);
-          }, 500);
-          values.splice(index, 1);
-          setCandidate(values);
-        });
-    }
-  });
+export const httpDeleteCandidate = async (user_id, event_id) => {
+  await axios
+    .delete(`${APP_URL}/candidates/${event_id}/${user_id}`, {
+      headers: {
+        Authorization: `Bearer ${ACTIVE_USER.token}`,
+      },
+    })
+    .then(() => {
+      //
+    })
+    .catch((err) => console.info(err));
 };
 
 export const httpStoreVote = async (form, navigate) => {
