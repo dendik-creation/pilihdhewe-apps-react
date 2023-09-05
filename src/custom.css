@@ -222,3 +222,13 @@
   align-items: center;
   position: relative;
 }
+
+.swal-embed-video {
+  width: 960px !important;
+}
+
+@media screen and (max-width: 575.98px) {
+  .swal-embed-video {
+    width: 100% !important;
+  }
+}

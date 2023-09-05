@@ -53,6 +53,7 @@ export const EventEdit = () => {
             user_id: item.user.id,
             visi: item.visi,
             misi: item.misi,
+            video: item.video,
             event_id: item.event_id,
             status: "then",
 
@@ -127,7 +128,14 @@ export const EventEdit = () => {
   const addCandidate = () => {
     setCandidate([
       ...candidate,
-      { user_id: "", visi: "", misi: "", event_id: id, status: "new" },
+      {
+        user_id: "",
+        visi: "",
+        misi: "",
+        video: "",
+        event_id: id,
+        status: "new",
+      },
     ]);
     setTransitionCandidate(false);
     setTimeout(() => {
@@ -451,6 +459,22 @@ export const EventEdit = () => {
                                 placeholder="Tekan enter untuk banyak misi & akhiri kalimat dengan titik"
                                 className="text-sm px-1.5 py-1 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
                                 value={_item.misi}
+                                onChange={(e) => handleChange(e, index)}
+                              />
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="video" className="text-sm mb-1">
+                                URL Video
+                              </label>
+                              <input
+                                type="url"
+                                required
+                                name="video"
+                                id="video"
+                                placeholder="Isikan URL Video Youtube"
+                                className="text-sm px-1.5 py-1 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
+                                value={_item.video}
                                 onChange={(e) => handleChange(e, index)}
                               />
                             </div>

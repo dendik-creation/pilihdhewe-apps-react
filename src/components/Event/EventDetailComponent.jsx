@@ -97,6 +97,27 @@ export default function EventDetailComponent() {
     });
   };
 
+  const candidateVideo = (video_url, candidate_name) => {
+    Swal.fire({
+      title: "Video " + candidate_name,
+      showConfirmButton: false,
+      showCloseButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      customClass: "swal-embed-video",
+      html: `
+      <div class="flex justify-center items-center mt-4">
+        <iframe
+          src="${video_url}"
+          frameborder="0"
+          allowfullscreen
+          class="w-full h-[300px] md:h-[540px] rounded-md"
+        ></iframe>
+      </div>
+      `,
+    });
+  };
+
   const detailCandidate = (name, gambar, visi, misi) => {
     const listMisi = misi.split("\n").filter((item) => item.trim() !== "");
     Swal.fire({
@@ -296,9 +317,29 @@ export default function EventDetailComponent() {
                                                 : "text-gray-500 hover:bg-gray-500 hover:text-sky-100"
                                             }`}
                                           >
-                                            <i className="bi bi-info-circle-fill me-2"></i>
-                                            <span className="line-clamp-2">
+                                            <i className="bi bi-info-circle-fill md:me-2"></i>
+                                            <span className="line-clamp-2 md:flex hidden">
                                               Detail
+                                            </span>
+                                          </button>
+
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              candidateVideo(
+                                                candidate.video,
+                                                candidate.user.name
+                                              )
+                                            }
+                                            className={`flex justify-start border-2 px-4 py-2 rounded-md transition-all hover:transition-all absolute left-16 md:left-28 bottom-2 text-sm ${
+                                              checked
+                                                ? "text-sky-100 hover:bg-sky-100 hover:text-gray-500"
+                                                : "text-gray-500 hover:bg-gray-500 hover:text-sky-100"
+                                            }`}
+                                          >
+                                            <i className="bi bi-camera-video-fill md:me-2"></i>
+                                            <span className="line-clamp-2 md:flex hidden">
+                                              Video
                                             </span>
                                           </button>
                                         </div>
@@ -399,19 +440,38 @@ export default function EventDetailComponent() {
                                       {meVote.misi}
                                     </span>
                                   </div>
-                                  <div
-                                    onClick={() =>
-                                      detailCandidate(
-                                        meVote.user.name,
-                                        meVote.user.gambar,
-                                        meVote.visi,
-                                        meVote.misi
-                                      )
-                                    }
-                                    className="flex justify-start text-sm px-4 py-2 rounded-md border-2 w-fit cursor-pointer text-gray-500 hover:bg-gray-500 hover:text-sky-100"
-                                  >
-                                    <i className="bi bi-info-circle me-2 text-md"></i>
-                                    <span>Detail</span>
+                                  <div className="flex justify-start items-center gap-4">
+                                    <div
+                                      onClick={() =>
+                                        detailCandidate(
+                                          meVote.user.name,
+                                          meVote.user.gambar,
+                                          meVote.visi,
+                                          meVote.misi
+                                        )
+                                      }
+                                      className="flex justify-start text-sm px-4 py-2 rounded-md border-2 w-fit cursor-pointer text-gray-500 hover:bg-gray-500 hover:text-sky-100"
+                                    >
+                                      <i className="bi bi-info-circle md:me-2 text-md"></i>
+                                      <span className="hidden md:block">
+                                        Detail
+                                      </span>
+                                    </div>
+
+                                    <div
+                                      onClick={() =>
+                                        candidateVideo(
+                                          meVote.video,
+                                          meVote.user.name
+                                        )
+                                      }
+                                      className="flex justify-start text-sm px-4 py-2 rounded-md border-2 w-fit cursor-pointer text-gray-500 hover:bg-gray-500 hover:text-sky-100"
+                                    >
+                                      <i className="bi bi-camera-video-fill md:me-2 text-md"></i>
+                                      <span className="hidden md:block">
+                                        Tonton Video
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -498,58 +558,6 @@ export default function EventDetailComponent() {
                   ) : (
                     ""
                   )}
-
-                  <div className="mx-3 mt-5 sm:mx-auto">
-                    <Transition
-                      show={transition}
-                      enter="transition transform duration-300"
-                      enterFrom="opacity-0 translate-y-12"
-                      enterTo="opacity-100 translate-y-0"
-                      leave="transition transform duration-300"
-                      leaveFrom="opacity-100 translate-y-0"
-                      leaveTo="opacity-0 lg:translate-y-12 -translate-y-12"
-                      className="flex flex-col bg-teal-50 shadow-inner px-5 py-5 rounded-lg mb-3"
-                    >
-                      <div
-                        className={`text-xl font-semibold ${
-                          meVote ? "mb-6" : "mb-0"
-                        }`}
-                        id="header"
-                      >
-                        {meVote
-                          ? "Kandidat Yang Anda Pilih"
-                          : ACTIVE_USER.user.role == "admin"
-                          ? "Admin Tidak Berpartisipasi Dalam Event"
-                          : "Anda Tidak Memilih Kandidat Pada Event Ini"}
-                      </div>
-                      {meVote && meVote !== null ? (
-                        <RadioGroup value={selected} onChange={setSelected}>
-                          <div className="grid grid-cols-1 gap-4 w-full">
-                            <div className="bg-white relative flex flex-col overflow-hidden rounded-lg px-5 py-8 shadow-md focus:outline-none">
-                              <div className="absolute flex justify-center overflow-hidden items-center top-0 left-0 h-full w-32">
-                                <img
-                                  src={meVote.user.gambar}
-                                  className="w-full h-full object-cover object-center"
-                                />
-                              </div>
-                              <div className="block ms-32">
-                                <div className="flex justify-start text-gray-900 mb-2">
-                                  <i className="bi bi-person me-2"></i>
-                                  <span>{meVote.user.name}</span>
-                                </div>
-                                <div className="flex justify-start text-sm text-gray-500">
-                                  <i className="bi bi-bookmark-check me-2 text-md"></i>
-                                  <span>{meVote.visi_misi}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </RadioGroup>
-                      ) : (
-                        ""
-                      )}
-                    </Transition>
-                  </div>
                 </div>
               )}
             </div>

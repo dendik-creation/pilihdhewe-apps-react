@@ -49,7 +49,7 @@ export const EventCreate = () => {
   }, []);
 
   const [candidate, setCandidate] = useState([
-    { user_id: "", visi: "", misi: "" },
+    { user_id: "", visi: "", misi: "", video: "" },
   ]);
 
   const handleChange = (e, index) => {
@@ -335,7 +335,7 @@ export const EventCreate = () => {
                             />
                           </div>
 
-                          <div className="flex flex-col">
+                          <div className="flex flex-col mb-4">
                             <label htmlFor="misi" className="text-sm mb-1">
                               Misi
                             </label>
@@ -347,6 +347,22 @@ export const EventCreate = () => {
                               placeholder="Tekan enter untuk banyak misi & akhiri kalimat dengan titik"
                               className="text-sm px-1.5 py-1 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
                               value={candidate.misi}
+                              onChange={(e) => handleChange(e, index)}
+                            />
+                          </div>
+
+                          <div className="flex flex-col">
+                            <label htmlFor="video" className="text-sm mb-1">
+                              URL Video
+                            </label>
+                            <input
+                              type="url"
+                              required
+                              name="video"
+                              id="video"
+                              placeholder="Isikan URL Video Yotube"
+                              className="text-sm px-1.5 py-1 border-2 border-stone-200 rounded-md outline-none focus:border-blue-400 focus:transition-all transition-all"
+                              value={candidate.video}
                               onChange={(e) => handleChange(e, index)}
                             />
                           </div>
