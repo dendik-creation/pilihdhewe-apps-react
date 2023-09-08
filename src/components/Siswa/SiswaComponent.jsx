@@ -270,7 +270,7 @@ export default class SiswaComponent extends Component {
             })
             .then((response) => {
               this.successResponse(response);
-              this.getSiswa();
+              this.getSiswa(this.state.pagination.current);
             })
             .catch((err) => {
               this.errorResponse(err);
@@ -474,9 +474,6 @@ export default class SiswaComponent extends Component {
                           <thead className="font-medium border-gray-800 border-b-2">
                             <tr>
                               <th scope="col" className="px-6 py-4">
-                                #
-                              </th>
-                              <th scope="col" className="px-6 py-4">
                                 Number Card
                               </th>
                               <th scope="col" className="px-6 py-4">
@@ -491,7 +488,10 @@ export default class SiswaComponent extends Component {
                               <th scope="col" className="px-6 py-4">
                                 Gender
                               </th>
-                              <th scope="col" className="px-6 py-4" colSpan={3}>
+                              <th scope="col" className="px-6 py-4">
+                                Kandidat
+                              </th>
+                              <th scope="col" className="px-6 py-4">
                                 Action
                               </th>
                             </tr>
@@ -502,9 +502,6 @@ export default class SiswaComponent extends Component {
                                 key={item.id}
                                 className="border-b hover:bg-yellow-100 odd:bg-gray-100 even:bg-white transition-all"
                               >
-                                <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                  {i + 1}
-                                </td>
                                 <td className="whitespace-nowrap px-6 py-4">
                                   {item.number_card}
                                 </td>
@@ -531,34 +528,109 @@ export default class SiswaComponent extends Component {
                                   {item.gender}
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4">
-                                  <button
-                                    onClick={() => this.editSiswa(item.id)}
-                                  >
-                                    <PencilSquareIcon className="w-6 h-6 text-sky-400 hover:text-blue-500" />
-                                  </button>
+                                  <div className="flex justify-start items-center w-full">
+                                    {item.ready_candidate == "yes" ? (
+                                      <i
+                                        className="bi bi-check-circle-fill text-lg text-green-500"
+                                        title="Kandidat Aktif"
+                                      ></i>
+                                    ) : (
+                                      <i
+                                        className="bi bi-x-circle-fill text-lg text-red-500"
+                                        title="Tidak Menjadi Kandidat"
+                                      ></i>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4">
-                                  <form
-                                    onSubmit={(e) =>
-                                      this.destroy(e, item.id, i)
-                                    }
-                                  >
-                                    <button type="submit">
-                                      <TrashIcon className="w-6 h-6 text-red-400 hover:text-rose-600" />
-                                    </button>
-                                  </form>
-                                </td>
-
-                                <td className="whitespace-nowrap px-6 py-4">
-                                  <form
-                                    onSubmit={(e) =>
-                                      this.resetPassword(e, item.id)
-                                    }
-                                  >
-                                    <button type="submit">
-                                      <KeyIcon className="w-6 h-6 text-lime-400 hover:text-lime-500" />
-                                    </button>
-                                  </form>
+                                  <div className="px-2.5 py-1.5 w-fit rounded-md group hover:bg-gray-800 hover:text-white bg-emerald-200">
+                                    <Menu
+                                      as="div"
+                                      className="relative w-full h-full"
+                                    >
+                                      <div>
+                                        <Menu.Button className="flex w-full h-full items-center group">
+                                          <div className="flex justify-start items-center">
+                                            <i className="bi bi-person-gear group-hover:text-white text-lg"></i>
+                                          </div>
+                                        </Menu.Button>
+                                      </div>
+                                      <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                      >
+                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                          <Menu.Item>
+                                            {({ active }) => (
+                                              <div className="">
+                                                <button
+                                                  onClick={() =>
+                                                    this.editSiswa(item.id)
+                                                  }
+                                                  className={classNames(
+                                                    active
+                                                      ? "hover:bg-gray-100"
+                                                      : "",
+                                                    "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
+                                                  )}
+                                                >
+                                                  <PencilSquareIcon className="w-4 h-4 text-blue-500 me-2" />
+                                                  <span className="">Edit</span>
+                                                </button>
+                                                <form
+                                                  className="my-2"
+                                                  onSubmit={(e) =>
+                                                    this.destroy(e, item.id, i)
+                                                  }
+                                                >
+                                                  <button
+                                                    className={classNames(
+                                                      active
+                                                        ? "hover:bg-gray-100"
+                                                        : "",
+                                                      "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
+                                                    )}
+                                                  >
+                                                    <TrashIcon className="w-4 h-4 text-red-500 me-2" />
+                                                    <span className="">
+                                                      Hapus
+                                                    </span>
+                                                  </button>
+                                                </form>
+                                                <form
+                                                  onSubmit={(e) =>
+                                                    this.resetPassword(
+                                                      e,
+                                                      item.id
+                                                    )
+                                                  }
+                                                >
+                                                  <button
+                                                    className={classNames(
+                                                      active
+                                                        ? "hover:bg-gray-100"
+                                                        : "",
+                                                      "flex px-4 py-2 text-sm text-gray-700 w-full items-center"
+                                                    )}
+                                                  >
+                                                    <KeyIcon className="w-4 h-4 text-emerald-500 me-2" />
+                                                    <span className="">
+                                                      Reset
+                                                    </span>
+                                                  </button>
+                                                </form>
+                                              </div>
+                                            )}
+                                          </Menu.Item>
+                                        </Menu.Items>
+                                      </Transition>
+                                    </Menu>
+                                  </div>
                                 </td>
                               </tr>
                             ))}
