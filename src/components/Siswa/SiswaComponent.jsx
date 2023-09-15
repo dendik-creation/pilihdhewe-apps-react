@@ -9,6 +9,9 @@ import {
   MagnifyingGlassIcon,
   ChevronRightIcon,
   ChevronLeftIcon,
+  NoSymbolIcon,
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
 } from "@heroicons/react/24/outline";
 import { KeyIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
@@ -157,7 +160,7 @@ export default class SiswaComponent extends Component {
         })
         .then((response) => {
           this.successResponse(response);
-          this.getSiswa();
+          this.getSiswa(this.state.pagination.current);
         })
         .catch((err) => console.log(err));
     });
@@ -810,43 +813,48 @@ export default class SiswaComponent extends Component {
                         className="w-full flex justify-center items-center mt-8"
                       >
                         <nav
-                          className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                          className="flex justify-center items-center rounded-md shadow-sm"
                           aria-label="Pagination"
                         >
+                          {/* Go to Page 1 */}
+                          {this.state.pagination.current !== 1 ? (
+                            <button
+                              onClick={() => {
+                                this.getSiswa(1);
+                              }}
+                              disabled={this.state.pagination.current == 1}
+                              className="relative inline-flex items-center disabled:cursor-not-allowed rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                            >
+                              <span className="sr-only">Page 1</span>
+                              <ChevronDoubleLeftIcon className="w-4 h-4" />
+                            </button>
+                          ) : (
+                            ""
+                          )}
+
+                          {/* Substract */}
                           <button
                             onClick={() => {
                               this.getSiswa(this.state.pagination.current - 1);
                             }}
                             disabled={this.state.pagination.current == 1}
-                            className="relative inline-flex items-center disabled:cursor-not-allowed rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                            className="relative inline-flex items-center rounded-l-md ms-1 disabled:cursor-not-allowed px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                           >
                             <span className="sr-only">Previous</span>
-                            <ChevronLeftIcon className="w-4 h-4" />
+                            {this.state.pagination.current == 1 ? (
+                              <NoSymbolIcon className="w-4 h-4" />
+                            ) : (
+                              <ChevronLeftIcon className="w-4 h-4" />
+                            )}
                           </button>
-                          {Array.from(
-                            { length: this.state.pagination.total },
-                            (_, indexPage) => (
-                              <button
-                                key={indexPage}
-                                disabled={
-                                  this.state.pagination.current == indexPage + 1
-                                }
-                                aria-current={`${
-                                  this.state.pagination.current == indexPage + 1
-                                    ? "page"
-                                    : ""
-                                }`}
-                                className={`${
-                                  indexPage + 1 == this.state.pagination.current
-                                    ? "relative z-10 inline-flex items-center bg-indigo-600 disabled:cursor-not-allowed px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                    : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                                }`}
-                                onClick={() => this.getSiswa(indexPage + 1)}
-                              >
-                                {indexPage + 1}
-                              </button>
-                            )
-                          )}
+
+                          {/* Current of Total */}
+                          <span className="text-gray-600 text-sm mx-7">
+                            Page {this.state.pagination.current} /{" "}
+                            {this.state.pagination.total}
+                          </span>
+
+                          {/* Plus */}
                           <button
                             disabled={
                               this.state.pagination.total ==
@@ -855,11 +863,36 @@ export default class SiswaComponent extends Component {
                             onClick={() =>
                               this.getSiswa(this.state.pagination.current + 1)
                             }
-                            className="relative inline-flex items-center rounded-r-md px-2 py-2 disabled:cursor-not-allowed text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                            className="relative inline-flex items-center rounded-r-md me-1 px-2 py-2 disabled:cursor-not-allowed text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                           >
                             <span className="sr-only">Next</span>
-                            <ChevronRightIcon className="w-4 h-4" />
+                            {this.state.pagination.current ==
+                            this.state.pagination.total ? (
+                              <NoSymbolIcon className="w-4 h-4" />
+                            ) : (
+                              <ChevronRightIcon className="w-4 h-4" />
+                            )}
                           </button>
+
+                          {/* Last Page */}
+                          {this.state.pagination.current !==
+                          this.state.pagination.total ? (
+                            <button
+                              disabled={
+                                this.state.pagination.total ==
+                                this.state.pagination.current
+                              }
+                              onClick={() =>
+                                this.getSiswa(this.state.pagination.total)
+                              }
+                              className="relative inline-flex items-center rounded-r-md px-2 py-2 disabled:cursor-not-allowed text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                            >
+                              <span className="sr-only">Last Page</span>
+                              <ChevronDoubleRightIcon className="w-4 h-4" />
+                            </button>
+                          ) : (
+                            ""
+                          )}
                         </nav>
                       </Transition>
                     </div>
