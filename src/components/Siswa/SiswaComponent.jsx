@@ -477,7 +477,7 @@ export default class SiswaComponent extends Component {
                           <thead className="font-medium border-gray-800 border-b-2">
                             <tr>
                               <th scope="col" className="px-6 py-4">
-                                Number Card
+                                NIS
                               </th>
                               <th scope="col" className="px-6 py-4">
                                 Avatar

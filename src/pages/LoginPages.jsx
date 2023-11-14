@@ -77,7 +77,7 @@ export default function LoginPages() {
               >
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Number Card
+                    Username {"( NIS )"}
                   </label>
                   <input
                     type="text"
